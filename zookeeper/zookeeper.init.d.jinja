@@ -22,9 +22,9 @@
 # description: zookeeper
 
 source /etc/rc.d/init.d/functions
+[ -e {{ zookeeper_alt_home }}/conf/zookeeper-env.sh ] && source {{ zookeeper_alt_home }}/conf/zookeeper-env.sh
 
 SERVER_SCRIPT={{ zookeeper_alt_home }}/bin/zkServer.sh
-
 RETVAL=0
 PIDFILE="${ZOOPIDFILE}"
 desc="ZooKeeper daemon"
