@@ -3,16 +3,16 @@
 {% set zookeeper_real_home = zookeeper_alt_home + '-' + zookeeper_version %}
 {% set zookeeper_alt_conf  = salt['pillar.get']('zookeeper:config', '/etc/zookeeper') %}
 {% set zookeeper_real_conf = zookeeper_alt_conf + '-' + zookeeper_version %}
-
+{% set zookeeper_uid = salt['pillar.get']('zookeeper:uid', '6030') %}
 {% set zookeeper_tgz = "zookeeper-" + zookeeper_version + ".tar.gz" %}
 {% set zookeeper_tgz_path = '/tmp/' + zookeeper_tgz %}
 
 zookeeper:
   group.present:
-    - gid: {{ pillar.get('zookeeper_uid') }}
+    - gid: {{ zookeeper_uid }}
   user.present:
-    - uid: {{ pillar.get('zookeeper_uid') }}
-    - gid: {{ pillar.get('zookeeper_uid') }}
+    - uid: {{ zookeeper_uid }}
+    - gid: {{ zookeeper_uid }}
 
 zk-directories:
   file.directory:
@@ -28,7 +28,7 @@ zk-directories:
 zookeeper-config-link:
   alternatives.install:
     - link: /etc/zookeeper/conf
-    - path: {{ zookeeper_conf }}
+    - path: {{ zookeeper_real_conf }}
     - priority: 30
 
 # hopefully the tarball is on the master
