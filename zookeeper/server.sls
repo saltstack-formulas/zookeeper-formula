@@ -4,7 +4,7 @@
 {% set zookeeper_alt_conf  = '/etc/zookeeper/conf' %}
 {% set zookeeper_real_conf = zookeeper_alt_conf + '-' + zookeeper_version %}
 
-{% from "zookeeper/map.jinja" import zookeeper with context %}
+{% from "zookeeper/map.jinja" import zookeeper_map with context %}
 
 include:
   - zookeeper

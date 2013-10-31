@@ -1,4 +1,4 @@
-{% set map = salt['grains.filter_by']({
+{% set zookeeper_map = salt['grains.filter_by']({
     'Debian': {
       'service_script': '/etc/init/zookeeper.conf',
       'service_script_source': 'zookeeper.upstart.jinja',
