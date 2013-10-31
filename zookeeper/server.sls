@@ -4,8 +4,6 @@
 {% set zookeeper_alt_conf  = '/etc/zookeeper/conf' %}
 {% set zookeeper_real_conf = zookeeper_alt_conf + '-' + zookeeper_version %}
 
-# Include :download:`map file <map.jinja>` of OS-specific package names and
-# file paths. Values can be overridden using Pillar.
 {% from "zookeeper/map.jinja" import zookeeper with context %}
 
 include:
@@ -26,7 +24,7 @@ move-zookeeper-dist-conf:
 
 zookeeper-config-link:
   alternatives.install:
-    - link: /etc/zookeeper/conf
+    - link: {{ zookeeper_alt_conf }}
     - path: {{ zookeeper_real_conf }}
     - priority: 30
         -
