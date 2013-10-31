@@ -1,3 +1,9 @@
+{% set zookeeper_version   = salt['pillar.get']('zookeeper:version', '3.4.5') %}
+{% set zookeeper_alt_home  = salt['pillar.get']('zookeeper:prefix', '/usr/lib/zookeeper') %}
+{% set zookeeper_real_home = zookeeper_alt_home + '-' + zookeeper_version %}
+{% set zookeeper_alt_conf  = salt['pillar.get']('zookeeper:config', '/etc/zookeeper') %}
+{% set zookeeper_real_conf = zookeeper_alt_conf + '-' + zookeeper_version %}
+
 # Include :download:`map file <map.jinja>` of OS-specific package names and
 # file paths. Values can be overridden using Pillar.
 {% from "zookeeper/map.jinja" import zookeeper with context %}
@@ -12,13 +18,12 @@ move-zookeeper-dist-conf:
     - require:
       - file.directory: {{ zookeeper_real_home }}
 
-{{ zookeeper_real_conf }}:
-  file.directory:
-    - user: root
-    - group: root
-    - mode: 755
-    - makedirs: True
-
+zookeeper-config-link:
+  alternatives.install:
+    - link: /etc/zookeeper/conf
+    - path: {{ zookeeper_real_conf }}
+    - priority: 30
+        -
 {{ zookeeper_real_home }}/conf:
   file.symlink:
     - target: {{ zookeeper_conf }}
