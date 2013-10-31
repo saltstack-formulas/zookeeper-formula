@@ -60,8 +60,9 @@ zookeeper-config-link:
     - mode: {{ zookeeper_map.service_script_mode }}
     - template: jinja
 
-zookeeper:
+zookeeper-service:
   service.running:
+    - name: zookeeper
     - enable: true
 
 {% endif %}
