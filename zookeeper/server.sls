@@ -52,9 +52,9 @@ zookeeper-config-link:
     - mode: 644
     - template: jinja
     - context:
-      zookeeper_port: {{ zookeeper_port }}
-      zookeeper_bind_address: {{ zookeeper_bind_address }}
-      zookeeper_data_dir: {{ zookeeper_data_dir }}
+      - zookeeper_port: {{ zookeeper_port }}
+      - zookeeper_bind_address: {{ zookeeper_bind_address }}
+      - zookeeper_data_dir: {{ zookeeper_data_dir }}
 
 {{ zookeeper_real_conf }}/zookeeper-env.sh:
   file.managed:
