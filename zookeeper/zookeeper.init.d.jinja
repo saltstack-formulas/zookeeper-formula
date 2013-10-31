@@ -22,7 +22,8 @@
 # description: zookeeper
 
 source /etc/rc.d/init.d/functions
-source {{ zookeeper_alt_home }}/bin/zkEnv.sh
+
+SERVER_SCRIPT={{ zookeeper_alt_home }}/bin/zkServer.sh
 
 RETVAL=0
 PIDFILE="${ZOOPIDFILE}"
@@ -30,7 +31,7 @@ desc="ZooKeeper daemon"
 
 start() {
   echo -n $"Starting $desc (zookeeper): "
-  daemon --user zookeeper zkServer.sh start
+  daemon --user zookeeper ${SERVER_SCRIPT} start
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && touch /var/lock/subsys/zookeeper
@@ -39,7 +40,7 @@ start() {
 
 stop() {
   echo -n $"Stopping $desc (zookeeper): "
-  daemon --user zookeeper zkServer.sh stop
+  daemon --user zookeeper ${SERVER_SCRIPT} stop
   RETVAL=$?
   sleep 5
   echo
