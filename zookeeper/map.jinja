@@ -1,0 +1,14 @@
+{% set map = {
+    'Debian': {
+      'service_script': '/etc/init/zookeeper.conf',
+      'service_script_source': 'zookeeper.upstart.jinja',
+      'service_script_mode': '644'
+    },
+    'RedHat': {
+      'service_script': '/etc/init.d/zookeeper',
+      'service_script_source': 'zookeeper.init.d.jinja',
+      'service_script_mode': '755'
+    },
+} %}
+
+{% set zookeeper = salt['grains.filter_by'](map, merge=salt['pillar.get']('zookeeper:lookup')) %}
