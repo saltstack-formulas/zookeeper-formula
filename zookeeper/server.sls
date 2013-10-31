@@ -32,7 +32,7 @@ zookeeper-config-link:
 
 {{ zookeeper_real_conf }}/zoo.cfg:
   file.managed:
-    - source: salt://zookeeper/zoo.cfg
+    - source: salt://zookeeper/zoo.cfg.jinja
     - user: root
     - group: root
     - mode: 644
@@ -40,11 +40,11 @@ zookeeper-config-link:
 
 {{ zookeeper_real_conf }}/zookeeper-env.sh:
   file.managed:
-    - source: salt://zookeeper/zookeeper-env.sh
+    - source: salt://zookeeper/zookeeper-env.sh.jinja
     - user: root
     - group: root
     - mode: 755
-
+    - template: jinja
 
 {% if salt['pillar.get']('zookeeper:service_script') %}
 
