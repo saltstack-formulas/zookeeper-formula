@@ -59,6 +59,8 @@ zookeeper-config-link:
     - group: root
     - mode: {{ zookeeper_map.service_script_mode }}
     - template: jinja
+    - context:
+      zookeeper_alt_home: {{ zookeeper_alt_home }}
 
 zookeeper-service:
   service.running:
