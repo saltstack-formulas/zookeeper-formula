@@ -13,8 +13,8 @@ include:
 
 /etc/zookeeper:
   file.directory:
-    user: root
-    group: root
+    - user: root
+    - group: root
 
 move-zookeeper-dist-conf:
   cmd.run:
