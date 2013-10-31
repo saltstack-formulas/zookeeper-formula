@@ -9,12 +9,15 @@ syncLimit=5
 # The directory where the snapshot is stored.
 # do not use /tmp for storage, /tmp here is just
 # example sakes.
+# might want to support dataLogDir here at some point?
 
-dataDir={{ salt['pillar.get']('zookeeper:data_dir', '/var/lib/zookeeper/data') }}
+dataDir={{ zookeeper_data_dir }}
 
 # the port at which the clients will connect
 
-clientPort=2181
+clientPort={{ zookeeper_port }}
+
+clientPortAddress={{ zookeeper_bind_address }}
 
 # Be sure to read the maintenance section of the
 # administrator guide before turning on autopurge.
@@ -26,8 +29,3 @@ autopurge.snapRetainCount=3
 # Purge task interval in hours
 # Set to "0" to disable auto purge feature
 #autopurge.purgeInterval=1
-
-#{% for host, grains in salt['mine.get']('cluster:test-cluster-1', 'grain.items', 'grain').items() %}
-# [{{ host }}]
-#server.{{ loop.index }} = {{ grains }}
-#{% endfor %}

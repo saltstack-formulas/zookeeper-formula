@@ -1,0 +1,10 @@
+# these are the supported pillars with their defaults
+
+# java_home: /usr/java/default
+# zookeeper:
+#   - version: 3.4.5
+#   - prefix: /usr/lib/zookeeper
+#   - data_dir: /var/lib/zookeeper/data
+#   - uid: 6030
+#   - port: 2181
+#   - bind_address: 0.0.0.0

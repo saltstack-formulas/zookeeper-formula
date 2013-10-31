@@ -1,8 +1,12 @@
 {% set zookeeper_version   = salt['pillar.get']('zookeeper:version', '3.4.5') %}
+{% set java_home           = salt['pillar.get']('java_home', '/usr/java/default') %}
 {% set zookeeper_alt_home  = salt['pillar.get']('zookeeper:prefix', '/usr/lib/zookeeper') %}
 {% set zookeeper_real_home = zookeeper_alt_home + '-' + zookeeper_version %}
 {% set zookeeper_alt_conf  = '/etc/zookeeper/conf' %}
 {% set zookeeper_real_conf = zookeeper_alt_conf + '-' + zookeeper_version %}
+{% set zookeeper_port = salt['pillar.get']('zookeeper:uid', '2181') %}
+{% set zookeeper_bind_address = salt['pillar.get']('zookeeper:bind_address', '0.0.0.0') %}
+{% set zookeeper_data_dir  = salt['pillar.get']('zookeeper:data_dir', '/var/lib/zookeeper/data') %}
 
 {% from "zookeeper/map.jinja" import zookeeper_map with context %}
 
@@ -13,6 +17,12 @@ include:
   file.directory:
     - user: root
     - group: root
+
+{{ zookeeper_data_dir }}:
+  file.directory:
+    user: zookeeper
+    group: zookeeper
+    makedirs: True
 
 move-zookeeper-dist-conf:
   cmd.run:
@@ -41,6 +51,10 @@ zookeeper-config-link:
     - group: root
     - mode: 644
     - template: jinja
+    - context:
+      zookeeper_port: {{ zookeeper_port }}
+      zookeeper_bind_address: {{ zookeeper_bind_address }}
+      zookeeper_data_dir: {{ zookeeper_data_dir }}
 
 {{ zookeeper_real_conf }}/zookeeper-env.sh:
   file.managed:
@@ -49,6 +63,8 @@ zookeeper-config-link:
     - group: root
     - mode: 755
     - template: jinja
+    - context:
+      java_home: {{ java_home }}
 
 {% if zookeeper_map.service_script %}
 
@@ -66,6 +82,8 @@ zookeeper-service:
   service.running:
     - name: zookeeper
     - enable: true
+    - require:
+      - file.directory: {{ zookeeper_data_dir }}
 
 {% endif %}
 
