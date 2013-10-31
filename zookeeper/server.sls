@@ -50,14 +50,14 @@ zookeeper-config-link:
     - mode: 755
     - template: jinja
 
-{% if zookeeper.service_script %}
+{% if zookeeper_map.service_script %}
 
-{{ zookeeper.service_script }}:
+{{ zookeeper_map.service_script }}:
   file.managed:
-    - source: salt://zookeeper/{{ zookeeper.service_script_source }}
+    - source: salt://zookeeper/{{ zookeeper_map.service_script_source }}
     - user: root
     - group: root
-    - mode: {{ zookeeper.service_script_mode }}
+    - mode: {{ zookeeper_map.service_script_mode }}
     - template: jinja
 
 zookeeper:
