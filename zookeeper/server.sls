@@ -20,9 +20,9 @@ include:
 
 {{ zookeeper_data_dir }}:
   file.directory:
-    user: zookeeper
-    group: zookeeper
-    makedirs: True
+    - user: zookeeper
+    - group: zookeeper
+    - makedirs: True
 
 move-zookeeper-dist-conf:
   cmd.run:
