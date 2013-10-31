@@ -53,7 +53,7 @@ restart() {
 }
 
 checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
+  status -p $PIDFILE zookeeper
   RETVAL=$?
 }
 
