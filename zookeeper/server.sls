@@ -26,7 +26,7 @@ zookeeper-config-link:
         -
 {{ zookeeper_real_home }}/conf:
   file.symlink:
-    - target: {{ zookeeper_conf }}
+    - target: {{ zookeeper_real_conf }}
     - require:
       - cmd: move-zookeeper-dist-conf
 
