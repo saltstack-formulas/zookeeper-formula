@@ -27,7 +27,7 @@ zookeeper-config-link:
     - link: {{ zookeeper_alt_conf }}
     - path: {{ zookeeper_real_conf }}
     - priority: 30
-        -
+
 {{ zookeeper_real_home }}/conf:
   file.symlink:
     - target: {{ zookeeper_real_conf }}
