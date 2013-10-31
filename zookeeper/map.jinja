@@ -1,5 +1,4 @@
-{% set map = salt['grains.filter_by'](
-  {
+{% set map = salt['grains.filter_by']({
     'Debian': {
       'service_script': '/etc/init/zookeeper.conf',
       'service_script_source': 'zookeeper.upstart.jinja',
@@ -10,4 +9,4 @@
       'service_script_source': 'zookeeper.init.d.jinja',
       'service_script_mode': '755',
     },
-  }, merge=salt['pillar.get']('zookeeper:lookup') ) %}
+}, merge=salt['pillar.get']('zookeeper:lookup')) %}
