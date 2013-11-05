@@ -50,7 +50,7 @@ install-zookeeper-dist:
     - require:
       - cmd.run: install-zookeeper-dist
 
-# /usr/lib/zookeeper-<version> needs to belong to root.root
+# fix permissions
 {{ real_home }}:
   file.directory:
     - user: root

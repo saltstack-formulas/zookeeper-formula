@@ -11,13 +11,13 @@ syncLimit=5
 # example sakes.
 # might want to support dataLogDir here at some point?
 
-dataDir={{ zookeeper_data_dir }}
+dataDir={{ data_dir }}
 
 # the port at which the clients will connect
 
-clientPort={{ zookeeper_port }}
+clientPort={{ port }}
 
-clientPortAddress={{ zookeeper_bind_address }}
+clientPortAddress={{ bind_address }}
 
 # Be sure to read the maintenance section of the
 # administrator guide before turning on autopurge.
@@ -28,4 +28,4 @@ clientPortAddress={{ zookeeper_bind_address }}
 autopurge.snapRetainCount=3
 # Purge task interval in hours
 # Set to "0" to disable auto purge feature
-#autopurge.purgeInterval=1
+# autopurge.purgeInterval=1
