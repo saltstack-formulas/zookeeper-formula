@@ -1,5 +1,5 @@
 {% set version   = salt['pillar.get']('zookeeper:version', '3.4.5') %}
-{% set java_home           = salt['pillar.get']('java_home', '/usr/java/default') %}
+{% set java_home           = salt['pillar.get']('java_home', '/usr/lib/java') %}
 {% set alt_home  = salt['pillar.get']('zookeeper:prefix', '/usr/lib/zookeeper') %}
 {% set real_home = alt_home + '-' + version %}
 {% set alt_conf  = '/etc/zookeeper/conf' %}
