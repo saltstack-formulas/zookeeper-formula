@@ -2,10 +2,10 @@
 {%- set alt_home    = salt['pillar.get']('zookeeper:prefix', '/usr/lib/zookeeper') %}
 {%- set source      = salt['pillar.get']('zookeeper:source', None) %}
 {%- set source_hash = salt['pillar.get']('zookeeper:source_hash', None) %}
-{%- set real_home = alt_home + '-' + version %}
-{%- set uid = salt['pillar.get']('zookeeper:uid', '6030') %}
-{%- set tgz = "zookeeper-" + version + ".tar.gz" %}
-{%- set tgz_path = '/tmp/' + tgz %}
+{%- set real_home   = alt_home + '-' + version %}
+{%- set uid         = salt['pillar.get']('zookeeper:uid', '6030') %}
+{%- set tgz         = "zookeeper-" + version + ".tar.gz" %}
+{%- set tgz_path    = salt['pillar.get']('downloads_path', '/tmp') + '/' + tgz %}
 
 zookeeper:
   group.present:
