@@ -8,6 +8,8 @@
 {% set bind_address = salt['pillar.get']('zookeeper:bind_address', '0.0.0.0') %}
 {% set data_dir  = salt['pillar.get']('zookeeper:data_dir', '/var/lib/zookeeper/data') %}
 
+{% if 'zookeeper' in salt['grains.get']('roles', []) %}
+
 {% from "zookeeper/map.jinja" import zookeeper_map with context %}
 
 include:
@@ -87,4 +89,4 @@ zookeeper-service:
 
 {% endif %}
 
-
+{% endif %}
