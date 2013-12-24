@@ -1,0 +1,176 @@
+{
+    "servers": [
+        {
+            "port": 2183,
+            "host": "localhost",
+            "alias": "${source_alias}",
+            "queries": [
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers",
+                                "typeNames" : [ "name" ]
+                            }
+                        }
+                    ],
+                    "obj": "org.apache.ZooKeeperService:name0=ReplicatedServer_id*",
+                    "attr": [
+                        "QuorumSize"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers",
+                                "typeNames" : [ "name" ]
+                            }
+                        }
+                    ],
+                    "obj": "org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica*,name2=*",
+                    "attr": [
+                        "MaxClientCnxnsPerHost",
+                        "MaxRequestLatency",
+                        "AvgRequestLatency",
+                        "MinRequestLatency",
+                        "MaxSessionTimeout",
+                        "MinSessionTimeout",
+                        "OutstandingRequests",
+                        "PacketsReceived",
+                        "PacketsSent",
+                        "PendingRevalidationCount",
+                        "TickTime"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers",
+                                "typeNames" : [ "name" ]
+                            }
+                        }
+                    ],
+                    "obj": "org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica*,name2=*,name3=InMemoryDataTree",
+                    "attr": [
+                        "NodeCount",
+                        "WatchCount"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers",
+                                "typeNames" : [ "name" ]
+                            }
+                        }
+                    ],
+                    "obj": "org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica*,name2=*,name3=Connections,name4=*,name5=*",
+                    "resultAlias": "Clients",
+                    "attr": [
+                        "AvgLatency",
+                        "LastLatency",
+                        "MaxLatency",
+                        "MinLatency",
+                        "OutstandingRequests",
+                        "PacketsReceived",
+                        "PacketsSent"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers",
+                                "typeNames" : [ "name" ]
+                            }
+                        }
+                    ],
+                    "obj": "org.apache.ZooKeeperService:name0=StandaloneServer_port*",
+                    "resultAlias": "Clients",
+                    "attr": [
+                        "AvgLatency",
+                        "LastLatency",
+                        "MaxLatency",
+                        "MinLatency",
+                        "OutstandingRequests",
+                        "PacketsReceived",
+                        "PacketsSent",
+                        "NumAliveConnections"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers"
+                            }
+                        }
+                    ],
+                    "obj": "java.lang:type=Memory",
+                    "resultAlias": "Memory",
+                    "attr": [
+                        "HeapMemoryUsage",
+                        "NonHeapMemoryUsage"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "rootPrefix": "zookeepers",
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}"
+                            }
+                        }
+                    ],
+                    "obj": "java.lang:type=OperatingSystem",
+                    "resultAlias": "Process",
+                    "attr": [
+                      "OpenFileDescriptorCount",
+                      "ProcessCpuLoad"
+                    ]
+                },
+                {
+                    "outputWriters": [
+                        {
+                            "@class": "com.googlecode.jmxtrans.model.output.GraphiteWriter",
+                            "settings": {
+                                "port": "${graphite_port}",
+                                "host": "${graphite_host}",
+                                "rootPrefix": "zookeepers"
+                            }
+                        }
+                    ],
+                    "obj": "java.lang:type=Threading",
+                    "resultAlias": "Threading",
+                    "attr": [
+                        "ThreadCount"
+                    ]
+                }
+            ],
+            "numQueryThreads": 2
+        }
+    ]
+}

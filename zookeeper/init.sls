@@ -1,18 +1,11 @@
-{%- set version     = salt['pillar.get']('zookeeper:version', '3.4.5') %}
-{%- set alt_home    = salt['pillar.get']('zookeeper:prefix', '/usr/lib/zookeeper') %}
-{%- set source      = salt['pillar.get']('zookeeper:source', None) %}
-{%- set source_hash = salt['pillar.get']('zookeeper:source_hash', None) %}
-{%- set real_home   = alt_home + '-' + version %}
-{%- set uid         = salt['pillar.get']('zookeeper:uid', '6030') %}
-{%- set tgz         = "zookeeper-" + version + ".tar.gz" %}
-{%- set tgz_path    = salt['pillar.get']('downloads_path', '/tmp') + '/' + tgz %}
+{%- from 'zookeeper/settings.sls' import zk with context %}
 
 zookeeper:
   group.present:
-    - gid: {{ uid }}
+    - gid: {{ zk.uid }}
   user.present:
-    - uid: {{ uid }}
-    - gid: {{ uid }}
+    - uid: {{ zk.uid }}
+    - gid: {{ zk.uid }}
 
 zk-directories:
   file.directory:
@@ -25,33 +18,21 @@ zk-directories:
       - /var/lib/zookeeper
       - /var/log/zookeeper
 
-
-{{ tgz_path }}:
-  file.managed:
-{%- if source %}
-    - source: {{ source }}
-    - source_hash: {{ source_hash }}
-{%- else %}
-    - source: salt://zookeeper/files/{{ tgz }}
-{% endif %}
-
 install-zookeeper-dist:
   cmd.run:
-    - name: tar xzf {{ tgz_path }}
+    - name: curl -L '{{ zk.source_url }}' | tar xz
     - cwd: /usr/lib
-    - unless: test -d {{ real_home }}/lib
-    - require:
-      - file.managed: {{ tgz_path }}
+    - unless: test -d {{ zk.real_home }}/lib
   alternatives.install:
     - name: zookeeper-home-link
-    - link: {{ alt_home }}
-    - path: {{ real_home }}
+    - link: {{ zk.alt_home }}
+    - path: {{ zk.real_home }}
     - priority: 30
     - require:
       - cmd.run: install-zookeeper-dist
 
 # fix permissions
-{{ real_home }}:
+{{ zk.real_home }}:
   file.directory:
     - user: root
     - group: root
