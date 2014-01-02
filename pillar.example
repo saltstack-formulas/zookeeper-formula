@@ -1,13 +1,12 @@
 # these are the supported pillars with their defaults
 
-# java_home: /usr/java/default
-# zookeeper:
-#   - version: 3.4.5
-### TODO  - source: http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz (optional)
-### TODO  - source_hash: sha1=fd921575e02478909557034ea922de871926efc7 (optional)
-#   - prefix: /usr/lib/zookeeper
-#   - data_dir: /var/lib/zookeeper/data
-#   - uid: 6030
-#   - port: 2181
-#   - bind_address: 0.0.0.0
+java_home: /usr/java/default
+zookeeper:
+    source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
+    version: 3.4.5
+    prefix: /usr/lib/zookeeper
+    data_dir: /var/lib/zookeeper/data
+    port: 2181
+    uid: 6030
+    bind_address: 0.0.0.0
 
