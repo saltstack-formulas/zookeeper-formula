@@ -1,3 +1,6 @@
+include:
+  - sun-java
+
 {%- from 'zookeeper/settings.sls' import zk with context %}
 
 zookeeper:
