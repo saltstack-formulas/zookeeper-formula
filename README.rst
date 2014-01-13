@@ -9,16 +9,16 @@ Formula to set up and configure a single-node zookeeper server.
     See the full `Salt Formulas installation and usage instructions
     <http://docs.saltstack.com/topics/conventions/formulas.html>`_.
 
+Formula Dependencies
+--------------------
+
+* sun-java
+
 Available states
 ================
 
 .. contents::
     :local:
-
-Formula Dependencies
---------------------
-
-* sun-java
 
 ``zookeeper``
 -------------
