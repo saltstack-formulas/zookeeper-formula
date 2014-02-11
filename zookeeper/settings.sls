@@ -12,7 +12,7 @@
 
 {%- set version      = g.get('version', p.get('version', '3.4.5')) %}
 {%- set version_name = 'zookeeper-' + version %}
-{%- set default_url  = 'http://www.us.apache.org/dist/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
+{%- set default_url  = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url   = g.get('source_url', p.get('source_url', default_url)) %}
 {%- set bind_address = gc.get('bind_address', pc.get('bind_address', '0.0.0.0')) %}
 {%- set data_dir     = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
@@ -46,5 +46,6 @@
                            'jmx_port': jmx_port,
                            'bind_address': bind_address,
                            'data_dir': data_dir,
-                           'zookeeper_host' : zookeeper_host
+                           'zookeeper_host' : zookeeper_host,
+                           'connection_string' : zookeeper_host + ':' + port,
                         }) %}
