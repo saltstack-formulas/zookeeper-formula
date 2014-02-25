@@ -29,7 +29,7 @@ install-zookeeper-dist:
     - path: {{ zk.real_home }}
     - priority: 30
     - require:
-      - cmd.run: install-zookeeper-dist
+      - cmd: install-zookeeper-dist
 
 # fix permissions
 {{ zk.real_home }}:

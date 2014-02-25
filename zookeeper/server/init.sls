@@ -21,8 +21,8 @@ move-zookeeper-dist-conf:
     - name: mv {{ zk.real_home }}/conf {{ zk.real_config }}
     - unless: test -L {{ zk.real_home }}/conf
     - require:
-      - file.directory: {{ zk.real_home }}
-      - file.directory: /etc/zookeeper
+      - file: {{ zk.real_home }}
+      - file: /etc/zookeeper
 
 zookeeper-config-link:
   alternatives.install:
@@ -76,7 +76,7 @@ zookeeper-service:
     - name: zookeeper
     - enable: true
     - require:
-      - file.directory: {{ zk.data_dir }}
+      - file: {{ zk.data_dir }}
 
 {% endif %}
 
