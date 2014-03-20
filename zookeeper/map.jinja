@@ -1,8 +1,8 @@
 {% set zookeeper_map = salt['grains.filter_by']({
     'Debian': {
-      'service_script': '/etc/init/zookeeper.conf',
-      'service_script_source': 'zookeeper.upstart',
-      'service_script_mode': '644',
+      'service_script': '/etc/init.d/zookeeper',
+      'service_script_source': 'zookeeper.init.d.ubuntu',
+      'service_script_mode': '755',
     },
     'RedHat': {
       'service_script': '/etc/init.d/zookeeper',

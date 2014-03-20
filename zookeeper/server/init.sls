@@ -59,8 +59,7 @@ zookeeper-config-link:
       java_home: {{ zk.java_home }}
       jmx_port: {{ zk.jmx_port }}
 
-{% if zookeeper_map.service_script %}
-
+{%- if zookeeper_map.service_script %}
 {{ zookeeper_map.service_script }}:
   file.managed:
     - source: salt://zookeeper/conf/{{ zookeeper_map.service_script_source }}
@@ -77,7 +76,5 @@ zookeeper-service:
     - enable: true
     - require:
       - file: {{ zk.data_dir }}
-
-{% endif %}
-
-{% endif %}
+{%- endif %}
+{%- endif %}
