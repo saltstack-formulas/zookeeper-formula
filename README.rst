@@ -10,7 +10,7 @@ Formula to set up and configure a single-node zookeeper server.
     <http://docs.saltstack.com/topics/conventions/formulas.html>`_.
 
 Formula Dependencies
---------------------
+====================
 
 * sun-java
 
