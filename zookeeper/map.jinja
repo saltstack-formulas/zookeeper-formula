@@ -9,4 +9,9 @@
       'service_script_source': 'zookeeper.init.d',
       'service_script_mode': '755',
     },
+    'Suse': {
+      'service_script': '/etc/init.d/zookeeper',
+      'service_script_source': 'zookeeper.init.d.ubuntu',
+      'service_script_mode': '755',
+    },
 }, merge=salt['pillar.get']('zookeeper:lookup')) %}
