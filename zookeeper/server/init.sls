@@ -47,6 +47,15 @@ zookeeper-config-link:
       port: {{ zk.port }}
       bind_address: {{ zk.bind_address }}
       data_dir: {{ zk.data_dir }}
+      zookeepers: {{ zk.zookeepers_with_ids }}
+
+
+{{ zk.myid_path }}:
+  file.managed:
+    - user: zookeeper
+    - group: zookeeper
+    - contents: |
+        {{ zk.myid }}
 
 {{ zk.real_config }}/zookeeper-env.sh:
   file.managed:
