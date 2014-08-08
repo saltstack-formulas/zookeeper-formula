@@ -9,4 +9,6 @@ zookeeper:
     port: 2181
     uid: 6030
     bind_address: 0.0.0.0
-
+mine_functions:
+  network.interfaces: []
+  test.ping: []
