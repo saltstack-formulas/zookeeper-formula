@@ -52,13 +52,13 @@
 {%- endfor %}
 
 # a plain list of hostnames
-{%- set zookeepers = zookeepers_with_ids.keys()|sort() %}
+{%- set zookeepers = zookeepers_with_ids.values() | sort() %}
 # this is the 'safe bet' to use for just connection settings (backwards compatible)
-{%- set zookeeper_host = zookeepers|first() %}
+{%- set zookeeper_host = (zookeepers | first()).split('+') | last() %}
 # produce the connection string, sth. like: 'host1:2181,host2:2181,host3:2181'
 {%- set connection_string = [] %}
 {%- for n in zookeepers %}
-{%- do connection_string.append( n + ':' + port ) %}
+{%- do connection_string.append( n.split('+') | last() + ':' + port ) %}
 {% endfor %}
 
 # return either the id of the host or an empty string
