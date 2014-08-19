@@ -10,7 +10,7 @@
 {%- set prefix       = p.get('prefix', '/usr/lib/zookeeper') %}
 {%- set java_home    = salt['pillar.get']('java_home', '/usr/lib/java') %}
 
-{%- set version      = g.get('version', p.get('version', '3.4.5')) %}
+{%- set version      = g.get('version', p.get('version', '3.4.6')) %}
 {%- set version_name = 'zookeeper-' + version %}
 {%- set default_url  = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url   = g.get('source_url', p.get('source_url', default_url)) %}
@@ -27,35 +27,38 @@
 {%- set real_config_src  = real_home + '/conf' %}
 {%- set real_config_dist = alt_config + '.dist' %}
 
-{%- set zookeeper_host_list = salt['mine.get']('roles:zookeeper', 'network.interfaces', 'grain').keys() | sort() %}
-{%- set zookeeper_host_num  = zookeeper_host_list|length() %}
-{%- set zookeepers_with_ids = {} %}
+{%- set force_mine_update = salt['mine.send']('network.get_hostname') %}
+{%- set zookeepers_host_dict = salt['mine.get']('roles:zookeeper', 'network.get_hostname', 'grain') %}
+{%- set zookeepers_ids = zookeepers_host_dict.keys() %}
+{%- set zookeepers_hosts = zookeepers_host_dict.values() %}
+{%- set zookeeper_host_num = zookeepers_ids | length() %}
 
 {%- if zookeeper_host_num == 0 %}
 # this will fail to even render but provide a hint as to what's wrong
 {{ 'No zookeeper nodes are defined (you need to set roles:zookeeper at least for one node in your cluster' }}
 {%- elif zookeeper_host_num is odd %}
 # for 1, 3, 5 ... nodes just return the list
-{%- set node_count = zookeeper_host_list|length() %}
+{%- set node_count = zookeepers_host_dict|length() %}
 {%- elif zookeeper_host_num is even %}
 # for 2, 4, 6 ... nodes return (n -1)
-{%- set node_count = zookeeper_host_list|length() - 1 %}
+{%- set node_count = zookeepers_host_dict|length() - 1 %}
 {%- endif %}
 
 # yes, this is not pretty, but produces sth like:
 # {'node1': '0+node1', 'node2': '1+node2', 'node3': '2+node2'}
+{%- set zookeepers_with_ids = {} %}
 {%- for i in range(node_count) %}
-{%- do zookeepers_with_ids.update({zookeeper_host_list[i] : '{0:d}'.format(i) + '+' + zookeeper_host_list[i] })  %}
+{%- do zookeepers_with_ids.update({zookeepers_ids[i] : '{0:d}'.format(i) + '+' + zookeepers_hosts[i] })  %}
 {%- endfor %}
 
 # a plain list of hostnames
-{%- set zookeepers = zookeepers_with_ids.keys()|sort() %}
+{%- set zookeepers = zookeepers_with_ids.values() | sort() %}
 # this is the 'safe bet' to use for just connection settings (backwards compatible)
-{%- set zookeeper_host = zookeepers|first() %}
+{%- set zookeeper_host = (zookeepers | first()).split('+') | last() %}
 # produce the connection string, sth. like: 'host1:2181,host2:2181,host3:2181'
 {%- set connection_string = [] %}
 {%- for n in zookeepers %}
-{%- do connection_string.append( n + ':' + port ) %}
+{%- do connection_string.append( n.split('+') | last() + ':' + port ) %}
 {% endfor %}
 
 # return either the id of the host or an empty string
