@@ -10,15 +10,20 @@
 {%- set prefix       = p.get('prefix', '/usr/lib/zookeeper') %}
 {%- set java_home    = salt['pillar.get']('java_home', '/usr/lib/java') %}
 
-{%- set version      = g.get('version', p.get('version', '3.4.6')) %}
-{%- set version_name = 'zookeeper-' + version %}
-{%- set default_url  = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
-{%- set source_url   = g.get('source_url', p.get('source_url', default_url)) %}
+{%- set version           = g.get('version', p.get('version', '3.4.6')) %}
+{%- set version_name      = 'zookeeper-' + version %}
+{%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
+{%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
 # bind_address is only supported as a grain, because it has to be host-specific
-{%- set bind_address = gc.get('bind_address', '0.0.0.0') %}
-{%- set data_dir     = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
-{%- set port         = gc.get('port', pc.get('port', '2181')) %}
-{%- set jmx_port     = gc.get('jmx_port', pc.get('jmx_port', '2183')) %}
+{%- set bind_address      = gc.get('bind_address', '0.0.0.0') %}
+{%- set data_dir          = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
+{%- set port              = gc.get('port', pc.get('port', '2181')) %}
+{%- set jmx_port          = gc.get('jmx_port', pc.get('jmx_port', '2183')) %}
+{%- set snap_count        = gc.get('snap_count', pc.get('snap_count', None)) %}
+{%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
+{%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
+{%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
+
 
 {%- set alt_config   = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
 {%- set real_config  = alt_config + '-' + version %}
@@ -83,6 +88,10 @@
                            'jmx_port': jmx_port,
                            'bind_address': bind_address,
                            'data_dir': data_dir,
+                           'snap_count': snap_count,
+                           'snap_retain_count': snap_retain_count,
+                           'purge_interval': purge_interval,
+                           'max_client_cnxns': max_client_cnxns,
                            'myid_path': data_dir + '/myid',
                            'zookeeper_host' : zookeeper_host,
                            'zookeepers' : zookeepers,

@@ -36,8 +36,9 @@ zookeeper-config-link:
     - require:
       - cmd: move-zookeeper-dist-conf
 
-{{ zk.real_config }}/zoo.cfg:
+zoo-cfg:
   file.managed:
+    - name: {{ zk.real_config }}/zoo.cfg
     - source: salt://zookeeper/conf/zoo.cfg
     - user: root
     - group: root
@@ -47,6 +48,10 @@ zookeeper-config-link:
       port: {{ zk.port }}
       bind_address: {{ zk.bind_address }}
       data_dir: {{ zk.data_dir }}
+      snap_count: {{ zk.snap_count }}
+      snap_retain_count: {{ zk.snap_retain_count }}
+      purge_interval: {{ zk.purge_interval }}
+      max_client_cnxns: {{ zk.max_client_cnxns }}
       zookeepers: {{ zk.zookeepers_with_ids }}
 
 
@@ -85,5 +90,7 @@ zookeeper-service:
     - enable: true
     - require:
       - file: {{ zk.data_dir }}
+    - watch:
+      - file: zoo-cfg
 {%- endif %}
 {%- endif %}
