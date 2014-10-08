@@ -72,6 +72,9 @@ zoo-cfg:
     - context:
       java_home: {{ zk.java_home }}
       jmx_port: {{ zk.jmx_port }}
+      heap_size: {{ zk.heap_size }}
+      perm_size: {{ zk.perm_size }}
+      jvm_opts: {{ zk.jvm_opts }}
 
 {%- if zookeeper_map.service_script %}
 {{ zookeeper_map.service_script }}:
