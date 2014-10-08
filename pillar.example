@@ -9,6 +9,10 @@ zookeeper:
     port: 2181
     uid: 6030
     bind_address: 0.0.0.0
+    perm_size: 128
+    min_heap_size: 512
+    preferred_heap_ratio: 0.8
+    jvm_opts: -server -XX:+DoEscapeAnalysis -XX:+UseCompressedOops -XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:MaxTenuringThreshold=32 -XX:+UseLargePages -XX:+AggressiveOpts
 mine_functions:
   network.interfaces: []
   test.ping: []
