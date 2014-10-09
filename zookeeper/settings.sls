@@ -26,29 +26,19 @@
 
 
 #
-# JVM options
-# sets heap size to the preferred_heap_ratio of the total memory.
-# Additional jvm options can be passed from the pillar.
+# JVM options - just follow grains/pillar settings for now
 #
-{%- set avail_mem                       = grains['mem_total'] %}
-{%- set perm_size                       = p.get('perm_size', 128) %}
-{%- set min_heap_size                   = p.get('min_heap_size', 1024) %}
-{%- set preferred_heap_ratio            = p.get('preferred_heap_ratio', 0.9) %}
-{%- set jvm_opts                        = p.get('jvm_opts', '') %}
-
-# heap_size should be the greater of min_heap_size or 
-# [(avail_mem - perm_size) * preferred_heap_ratio) rounded up to a 4MB boundary.
-{%- set heap_size = avail_mem - perm_size %}
-{%- set heap_size = heap_size * preferred_heap_ratio %}
-{%- if 0 != heap_size % 4 %}
-{%- set heap_size = heap_size // 4 %}
-{%- set heap_size = heap_size + 1 %}
-{%- set heap_size = heap_size * 4 %}
-{%- set heap_size = heap_size | int() %}
-{%- endif %}
-{%- if heap_size < min_heap_size %}
-{%- set heap_size = min_heap_size %}
-{%- endif %}
+# set in - zookeeper:
+#          - config:
+#            - max_perm_size:
+#            - max_heap_size:
+#            - initial_heap_size:
+#            - jvm_opts:
+#
+{%- set max_perm_size     = gc.get('max_perm_size', pc.get('max_perm_size', 128)) %}
+{%- set max_heap_size     = gc.get('max_heap_size', pc.get('max_heap_size', 1024)) %}
+{%- set initial_heap_size = gc.get('initial_heap_size', pc.get('initial_heap_size', 256)) %}
+{%- set jvm_opts          = gc.get('jvm_opts', pc.get('jvm_opts', None)) %}  
 
 {%- set alt_config   = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
 {%- set real_config  = alt_config + '-' + version %}
@@ -122,7 +112,8 @@
                            'zookeepers' : zookeepers,
                            'zookeepers_with_ids' : zookeepers_with_ids.values(),
                            'connection_string' : ','.join(connection_string),
-			   'heap_size': heap_size,
-			   'perm_size': perm_size,
-			   'jvm_opts': jvm_opts,
+                           'initial_heap_size': initial_heap_size,
+                           'max_heap_size': max_heap_size,
+                           'max_perm_size': max_perm_size,
+                           'jvm_opts': jvm_opts,
                         }) %}

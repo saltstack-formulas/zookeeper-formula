@@ -2,17 +2,30 @@
 
 java_home: /usr/java/default
 zookeeper:
-    source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
-    version: 3.4.5
+    source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
+    version: 3.4.6
     prefix: /usr/lib/zookeeper
-    data_dir: /var/lib/zookeeper/data
-    port: 2181
     uid: 6030
-    bind_address: 0.0.0.0
-    perm_size: 128
-    min_heap_size: 512
-    preferred_heap_ratio: 0.8
-    jvm_opts: -server -XX:+DoEscapeAnalysis -XX:+UseCompressedOops -XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:MaxTenuringThreshold=32 -XX:+UseLargePages -XX:+AggressiveOpts
+    config:
+      data_dir: /var/lib/zookeeper/data
+      port: 2181
+      jmx_port: 2183
+      snap_count: None
+      snap_retain_count: 3
+      purge_interval: None
+      max_client_cnxns: None
+      max_perm_size: 128
+      max_heap_size: 1024
+      initial_heap_size: 256
+      jvm_opts: None
+
 mine_functions:
   network.interfaces: []
   test.ping: []
+
+# you can override everything in config: locally with grains, additionally there is support for
+# the bind_address grain
+#
+# zookeeper:
+#   config:
+#     bind_address: /var/lib/zookeeper/data
