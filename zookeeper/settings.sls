@@ -58,10 +58,10 @@
 {{ 'No zookeeper nodes are defined (you need to set roles:zookeeper at least for one node in your cluster' }}
 {%- elif zookeeper_host_num is odd %}
 # for 1, 3, 5 ... nodes just return the list
-{%- set node_count = zookeepers_host_dict|length() %}
+{%- set node_count = zookeeper_host_num %}
 {%- elif zookeeper_host_num is even %}
 # for 2, 4, 6 ... nodes return (n -1)
-{%- set node_count = zookeepers_host_dict|length() - 1 %}
+{%- set node_count = zookeeper_host_num - 1 %}
 {%- endif %}
 
 # yes, this is not pretty, but produces sth like:
