@@ -78,7 +78,7 @@
 # produce the connection string, sth. like: 'host1:2181,host2:2181,host3:2181'
 {%- set connection_string = [] %}
 {%- for n in zookeepers %}
-{%- do connection_string.append( n.split('+') | last() + ':' + port ) %}
+{%- do connection_string.append( n.split('+') | last() + ':' + port | string ) %}
 {% endfor %}
 
 # return either the id of the host or an empty string
