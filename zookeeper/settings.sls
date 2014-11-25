@@ -7,7 +7,7 @@
 # these are global - hence pillar-only
 {%- set uid          = p.get('uid', '6030') %}
 {%- set userhome     = p.get('userhome', '/home/zookeeper') %}
-{%- set prefix       = p.get('prefix', '/usr/lib/zookeeper') %}
+{%- set prefix       = p.get('prefix', '/usr/lib') %}
 {%- set java_home    = salt['pillar.get']('java_home', '/usr/lib/java') %}
 
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
@@ -42,7 +42,7 @@
 
 {%- set alt_config   = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
 {%- set real_config  = alt_config + '-' + version %}
-{%- set alt_home     = prefix %}
+{%- set alt_home     = prefix + '/zookeeper' %}
 {%- set real_home    = alt_home + '-' + version %}
 {%- set real_config_src  = real_home + '/conf' %}
 {%- set real_config_dist = alt_config + '.dist' %}

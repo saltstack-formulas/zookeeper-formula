@@ -21,7 +21,7 @@ zk-directories:
 install-zookeeper-dist:
   cmd.run:
     - name: curl -L '{{ zk.source_url }}' | tar xz
-    - cwd: /usr/lib
+    - cwd: {{ zk.prefix }}
     - unless: test -d {{ zk.real_home }}/lib
   alternatives.install:
     - name: zookeeper-home-link
