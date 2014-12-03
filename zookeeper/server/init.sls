@@ -21,7 +21,6 @@ move-zookeeper-dist-conf:
     - name: mv {{ zk.real_home }}/conf {{ zk.real_config }}
     - unless: test -L {{ zk.real_home }}/conf
     - require:
-      - file: {{ zk.real_home }}
       - file: /etc/zookeeper
 
 zookeeper-config-link:
