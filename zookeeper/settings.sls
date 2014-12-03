@@ -10,6 +10,7 @@
 {%- set prefix       = p.get('prefix', '/usr/lib') %}
 {%- set java_home    = salt['pillar.get']('java_home', '/usr/lib/java') %}
 
+{%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
 {%- set version_name      = 'zookeeper-' + version %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
@@ -116,4 +117,5 @@
                            'max_heap_size': max_heap_size,
                            'max_perm_size': max_perm_size,
                            'jvm_opts': jvm_opts,
+                           'log_level': log_level,
                         }) %}

@@ -18,6 +18,7 @@ zookeeper:
       max_heap_size: 1024
       initial_heap_size: 256
       jvm_opts: None
+      log_level: INFO
 
 mine_functions:
   network.interfaces: []

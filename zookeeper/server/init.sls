@@ -76,6 +76,7 @@ zoo-cfg:
       max_heap_size: {{ zk.max_heap_size }}
       max_perm_size: {{ zk.max_perm_size }}
       jvm_opts: {{ zk.jvm_opts }}
+      log_level: {{ zk.log_level }}
 
 {%- if zookeeper_map.service_script %}
 {{ zookeeper_map.service_script }}:
