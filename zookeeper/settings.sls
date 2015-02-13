@@ -8,7 +8,8 @@
 {%- set uid          = p.get('uid', '6030') %}
 {%- set userhome     = p.get('userhome', '/home/zookeeper') %}
 {%- set prefix       = p.get('prefix', '/usr/lib') %}
-{%- set java_home    = salt['pillar.get']('java_home', '/usr/lib/java') %}
+{%- set java_home    = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
+
 
 {%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
