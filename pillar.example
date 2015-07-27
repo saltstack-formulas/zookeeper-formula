@@ -6,6 +6,7 @@ zookeeper:
     version: 3.4.6
     prefix: /usr/lib
     uid: 6030
+    targeting_method: grain # [compound, glob] also supported
     config:
       data_dir: /var/lib/zookeeper/data
       port: 2181

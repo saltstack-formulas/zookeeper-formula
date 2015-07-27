@@ -49,8 +49,11 @@
 {%- set real_config_src  = real_home + '/conf' %}
 {%- set real_config_dist = alt_config + '.dist' %}
 
+{%- set hosts_target = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
+{%- set targeting_method = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
+
 {%- set force_mine_update = salt['mine.send']('network.get_hostname') %}
-{%- set zookeepers_host_dict = salt['mine.get']('roles:zookeeper', 'network.get_hostname', 'grain') %}
+{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, 'network.get_hostname', targeting_method) %}
 {%- set zookeepers_ids = zookeepers_host_dict.keys() %}
 {%- set zookeepers_hosts = zookeepers_host_dict.values() %}
 {%- set zookeeper_host_num = zookeepers_ids | length() %}
