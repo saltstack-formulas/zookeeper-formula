@@ -76,7 +76,7 @@ zoo-cfg:
       max_perm_size: {{ zk.max_perm_size }}
       jvm_opts: {{ zk.jvm_opts }}
       log_level: {{ zk.log_level }}
-
+      config_dir: {{ zk.real_config_src }}
 {%- if zookeeper_map.service_script %}
 {{ zookeeper_map.service_script }}:
   file.managed:
@@ -86,8 +86,8 @@ zoo-cfg:
     - mode: {{ zookeeper_map.service_script_mode }}
     - template: jinja
     - context:
-      alt_home: {{ zk.alt_home }}
-
+        real_home: {{ zk.real_home }}
+        config_home: {{ zk.real_config_src }}
 zookeeper-service:
   service.running:
     - name: zookeeper
