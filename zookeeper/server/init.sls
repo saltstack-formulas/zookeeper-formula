@@ -52,7 +52,7 @@ zoo-cfg:
       purge_interval: {{ zk.purge_interval }}
       max_client_cnxns: {{ zk.max_client_cnxns }}
       zookeepers: {{ zk.zookeepers_with_ids }}
-
+      data_log_dir: {{ zk.data_log_dir }}
 
 {{ zk.myid_path }}:
   file.managed:

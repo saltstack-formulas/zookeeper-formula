@@ -25,7 +25,7 @@
 {%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
 {%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
 {%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
-
+{%- set data_log_dir      = gc.get('data_log_dir', pc.get('data_log_dir', None)) %}
 
 #
 # JVM options - just follow grains/pillar settings for now
@@ -52,8 +52,8 @@
 {%- set hosts_target = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
 {%- set targeting_method = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
 
-{%- set force_mine_update = salt['mine.send']('network.ip_addrs') %}
-{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, 'network.ip_addrs', targeting_method) %}
+{%- set force_mine_update = salt['mine.send']('network.get_hostname') %}
+{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, 'network.get_hostname', targeting_method) %}
 {%- set zookeepers_ids = zookeepers_host_dict.keys() %}
 {%- set zookeepers_hosts = zookeepers_host_dict.values() %}
 {%- set zookeeper_host_num = zookeepers_ids | length() %}
@@ -73,7 +73,7 @@
 # {'node1': '0+node1', 'node2': '1+node2', 'node3': '2+node2'}
 {%- set zookeepers_with_ids = {} %}
 {%- for i in range(node_count) %}
-{%- do zookeepers_with_ids.update({zookeepers_ids[i] : '{0:d}'.format(i) + '+' + zookeepers_hosts[i][0] })  %}
+{%- do zookeepers_with_ids.update({zookeepers_ids[i] : '{0:d}'.format(i) + '+' + zookeepers_hosts[i] })  %}
 {%- endfor %}
 
 # a plain list of hostnames
@@ -122,4 +122,5 @@
                            'max_perm_size': max_perm_size,
                            'jvm_opts': jvm_opts,
                            'log_level': log_level,
+                           'data_log_dir': data_log_dir
                         }) %}
