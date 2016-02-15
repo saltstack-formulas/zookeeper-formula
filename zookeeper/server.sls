@@ -12,8 +12,8 @@ include:
 
 {{ zk.data_dir }}:
   file.directory:
-    - user: zookeeper
-    - group: zookeeper
+    - user: {{ zk.user }}
+    - group: {{ zk.user }}
     - makedirs: True
 
 move-zookeeper-dist-conf:

@@ -3,10 +3,6 @@
 {% set g  = salt['grains.get']('zookeeper', {}) %}
 {% set gc = g.get('config', {}) %}
 
-{%- set default_uid = '6030' %}
-# these are global - hence pillar-only
-{%- set uid          = p.get('uid', '6030') %}
-{%- set userhome     = p.get('userhome', '/home/zookeeper') %}
 {%- set prefix       = p.get('prefix', '/usr/lib') %}
 {%- set java_home    = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
 
@@ -90,37 +86,36 @@
 {%- set myid = zookeepers_with_ids.get(grains.id, '').split('+')|first() %}
 
 {%- set zk = {} %}
-{%- do zk.update( { 'uid': uid,
-                           'version' : version,
-                           'version_name': version_name,
-                           'userhome' : userhome,
-                           'source_url': source_url,
-                           'myid': myid,
-                           'prefix' : prefix,
-                           'alt_config' : alt_config,
-                           'real_config' : real_config,
-                           'alt_home' : alt_home,
-                           'real_home' : real_home,
-                           'real_config_src' : real_config_src,
-                           'real_config_dist' : real_config_dist,
-                           'java_home' : java_home,
-                           'port': port,
-                           'jmx_port': jmx_port,
-                           'bind_address': bind_address,
-                           'data_dir': data_dir,
-                           'snap_count': snap_count,
-                           'snap_retain_count': snap_retain_count,
-                           'purge_interval': purge_interval,
-                           'max_client_cnxns': max_client_cnxns,
-                           'myid_path': data_dir + '/myid',
-                           'zookeeper_host' : zookeeper_host,
-                           'zookeepers' : zookeepers,
-                           'zookeepers_with_ids' : zookeepers_with_ids.values(),
-                           'connection_string' : ','.join(connection_string),
-                           'initial_heap_size': initial_heap_size,
-                           'max_heap_size': max_heap_size,
-                           'max_perm_size': max_perm_size,
-                           'jvm_opts': jvm_opts,
-                           'log_level': log_level,
-                           'data_log_dir': data_log_dir
-                        }) %}
+{%- do zk.update( { 'user': g.get('user', p.get('user')),
+                    'version' : version,
+                    'version_name': version_name,
+                    'source_url': source_url,
+                    'myid': myid,
+                    'prefix' : prefix,
+                    'alt_config' : alt_config,
+                    'real_config' : real_config,
+                    'alt_home' : alt_home,
+                    'real_home' : real_home,
+                    'real_config_src' : real_config_src,
+                    'real_config_dist' : real_config_dist,
+                    'java_home' : java_home,
+                    'port': port,
+                    'jmx_port': jmx_port,
+                    'bind_address': bind_address,
+                    'data_dir': data_dir,
+                    'snap_count': snap_count,
+                    'snap_retain_count': snap_retain_count,
+                    'purge_interval': purge_interval,
+                    'max_client_cnxns': max_client_cnxns,
+                    'myid_path': data_dir + '/myid',
+                    'zookeeper_host' : zookeeper_host,
+                    'zookeepers' : zookeepers,
+                    'zookeepers_with_ids' : zookeepers_with_ids.values(),
+                    'connection_string' : ','.join(connection_string),
+                    'initial_heap_size': initial_heap_size,
+                    'max_heap_size': max_heap_size,
+                    'max_perm_size': max_perm_size,
+                    'jvm_opts': jvm_opts,
+                    'log_level': log_level,
+                    'data_log_dir': data_log_dir
+                 }) %}
