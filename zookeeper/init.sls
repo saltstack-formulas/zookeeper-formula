@@ -1,16 +1,17 @@
 {%- from 'zookeeper/settings.sls' import zk with context %}
 
 zookeeper:
-  group.present:
-    - gid: {{ zk.uid }}
   user.present:
-    - uid: {{ zk.uid }}
-    - gid: {{ zk.uid }}
-
+    - name: {{ zk.user }}
+    - gif_from_name: True
+    - system: true
+    - createhome: false
+    - password: true
+        
 zk-directories:
   file.directory:
-    - user: zookeeper
-    - group: zookeeper
+    - user: {{ zk.user }}
+    - group: { zk.user }
     - mode: 755
     - makedirs: True
     - names:

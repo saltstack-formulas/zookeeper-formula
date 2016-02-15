@@ -47,7 +47,7 @@ RETVAL=0
 SLEEP_TIME=3
 PROC_NAME="java"
 PIDFILE="/var/run/zookeeper/zookeeper-server.pid"
-EXEC_PATH="{{ alt_home }}/bin/zkServer.sh"
+EXEC_PATH="{{ real_home }}/bin/zkServer.sh"
 
 DAEMON="zookeeper"
 DESC="Zookeeper Server"
@@ -62,7 +62,7 @@ start() {
   [ -d $CONF_DIR ] || exit $ERROR_PROGRAM_NOT_CONFIGURED
   log_success_msg "Starting ${DESC}: "
 
-  su -s /bin/bash $SVC_USER -c "$EXEC_PATH start"
+  su -s /bin/bash $SVC_USER -c "$EXEC_PATH start {{ config_home }}/zoo.cfg"
 
   # Some processes are slow to start
   sleep $SLEEP_TIME

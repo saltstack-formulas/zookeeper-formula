@@ -3,10 +3,6 @@
 {% set g  = salt['grains.get']('zookeeper', {}) %}
 {% set gc = g.get('config', {}) %}
 
-{%- set default_uid = '6030' %}
-# these are global - hence pillar-only
-{%- set uid          = p.get('uid', '6030') %}
-{%- set userhome     = p.get('userhome', '/home/zookeeper') %}
 {%- set prefix       = p.get('prefix', '/usr/lib') %}
 {%- set java_home    = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
 
@@ -25,7 +21,7 @@
 {%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
 {%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
 {%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
-
+{%- set data_log_dir      = gc.get('data_log_dir', pc.get('data_log_dir', None)) %}
 
 #
 # JVM options - just follow grains/pillar settings for now
@@ -52,8 +48,8 @@
 {%- set hosts_target = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
 {%- set targeting_method = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
 
-{%- set force_mine_update = salt['mine.send']('network.get_hostname') %}
-{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, 'network.get_hostname', targeting_method) %}
+{%- set force_mine_update = salt['mine.send']('network.interface_ip', 'eth0') %}
+{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, 'network.interface_ip', targeting_method) %}
 {%- set zookeepers_ids = zookeepers_host_dict.keys() %}
 {%- set zookeepers_hosts = zookeepers_host_dict.values() %}
 {%- set zookeeper_host_num = zookeepers_ids | length() %}
@@ -90,36 +86,36 @@
 {%- set myid = zookeepers_with_ids.get(grains.id, '').split('+')|first() %}
 
 {%- set zk = {} %}
-{%- do zk.update( { 'uid': uid,
-                           'version' : version,
-                           'version_name': version_name,
-                           'userhome' : userhome,
-                           'source_url': source_url,
-                           'myid': myid,
-                           'prefix' : prefix,
-                           'alt_config' : alt_config,
-                           'real_config' : real_config,
-                           'alt_home' : alt_home,
-                           'real_home' : real_home,
-                           'real_config_src' : real_config_src,
-                           'real_config_dist' : real_config_dist,
-                           'java_home' : java_home,
-                           'port': port,
-                           'jmx_port': jmx_port,
-                           'bind_address': bind_address,
-                           'data_dir': data_dir,
-                           'snap_count': snap_count,
-                           'snap_retain_count': snap_retain_count,
-                           'purge_interval': purge_interval,
-                           'max_client_cnxns': max_client_cnxns,
-                           'myid_path': data_dir + '/myid',
-                           'zookeeper_host' : zookeeper_host,
-                           'zookeepers' : zookeepers,
-                           'zookeepers_with_ids' : zookeepers_with_ids.values(),
-                           'connection_string' : ','.join(connection_string),
-                           'initial_heap_size': initial_heap_size,
-                           'max_heap_size': max_heap_size,
-                           'max_perm_size': max_perm_size,
-                           'jvm_opts': jvm_opts,
-                           'log_level': log_level,
-                        }) %}
+{%- do zk.update( { 'user': g.get('user', p.get('user')),
+                    'version' : version,
+                    'version_name': version_name,
+                    'source_url': source_url,
+                    'myid': myid,
+                    'prefix' : prefix,
+                    'alt_config' : alt_config,
+                    'real_config' : real_config,
+                    'alt_home' : alt_home,
+                    'real_home' : real_home,
+                    'real_config_src' : real_config_src,
+                    'real_config_dist' : real_config_dist,
+                    'java_home' : java_home,
+                    'port': port,
+                    'jmx_port': jmx_port,
+                    'bind_address': bind_address,
+                    'data_dir': data_dir,
+                    'snap_count': snap_count,
+                    'snap_retain_count': snap_retain_count,
+                    'purge_interval': purge_interval,
+                    'max_client_cnxns': max_client_cnxns,
+                    'myid_path': data_dir + '/myid',
+                    'zookeeper_host' : zookeeper_host,
+                    'zookeepers' : zookeepers,
+                    'zookeepers_with_ids' : zookeepers_with_ids.values(),
+                    'connection_string' : ','.join(connection_string),
+                    'initial_heap_size': initial_heap_size,
+                    'max_heap_size': max_heap_size,
+                    'max_perm_size': max_perm_size,
+                    'jvm_opts': jvm_opts,
+                    'log_level': log_level,
+                    'data_log_dir': data_log_dir
+                 }) %}
