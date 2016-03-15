@@ -1,2 +1,6 @@
 .idea
-
+# VIM editor swap files
+.*.sw?
+# Backups
+*~
+*.bak
