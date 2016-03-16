@@ -33,8 +33,8 @@ Installs the server configuration and enables and starts the zookeeper service.
 Only works if 'zookeeper' is one of the roles (grains) of the node. This separation
 allows for nodes to have the zookeeper libs and environment available without running the service.
 
-Zookeeper Role and Connection String
-====================================
+Zookeeper Role and Client Connection String
+===========================================
 
 The implementation depends on the existence of the ``roles`` grain in your minion configuration -
 at least one minion in your network has to have the **zookeeper role** which means that it is a
@@ -48,32 +48,30 @@ the result of calling:
 
 .. code:: yaml
 
-    {%- from 'zookeeper/settings.sls' import zk with context %}
+   {%- from 'zookeeper/settings.sls' import zk with context -%}
 
-    /etc/somefile.conf:
-      file.managed:
-        - source: salt://some-formula/files/something.xml
-        - user: root
-        - group: root
-        - mode: 644
-        - template: jinja
-        - context:
-          zookeepers: {{ zk.connection_string }}
+   /etc/somefile.conf:
+     file.managed:
+       - source: salt://some-formula/files/something.xml
+       - user: root
+       - group: root
+       - mode: 644
+       - template: jinja
+       - context:
+         zookeepers: {{ zk.connection_string }}
 
 ``zk.connection_string`` variable contains a string that reflects the names and ports of the hosts
 with the ``zookeeper`` role in the cluster, like
 
-.. code:: yaml
+::
 
-    host1.mycluster.net:2181,host2.mycluster.net:2181,host3.mycluster.net:2181
+  host1.mycluster.net:2181,host2.mycluster.net:2181,host3.mycluster.net:2181
 
 And this will also work for single-node configurations. Whenever you have more than 2 hosts with
 the ``zookeeper`` role the formula will setup a Zookeeper cluster, whenever there is an even number
 it will be (number - 1).
 
-
 .. _`Salt Mine`: https://docs.saltstack.com/en/latest/topics/mine/index.html
-
 
 Customisations in Pillar or Grains
 ----------------------------------

@@ -30,8 +30,8 @@ zookeeper:
 #   network.ip_addrs:
 #     interface: eth0
 
-# You can override everything in config: locally with grains, additionally there is support for
-# the bind_address grain
+# You can override everything in config: locally with grains, additionally
+# there is support for the bind_address grain
 #
 # zookeeper:
 #   config:
