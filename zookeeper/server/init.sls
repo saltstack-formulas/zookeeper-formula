@@ -1,6 +1,6 @@
 {%- if 'zookeeper' in salt['grains.get']('roles', []) %}
 {%- from 'zookeeper/settings.sls' import zk with context %}
-{%- from "zookeeper/map.jinja" import zookeeper_map with context %}
+{%- from 'zookeeper/map.jinja' import zookeeper_map with context %}
 
 include:
   - zookeeper

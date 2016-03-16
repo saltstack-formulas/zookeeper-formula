@@ -1,33 +1,41 @@
-# these are the supported pillars with their defaults
+# These are the supported Pillars with their defaults
 
-java_home: /usr/java/default
+java_home: /usr/lib/java
 zookeeper:
-    source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
-    version: 3.4.6
-    prefix: /usr/lib
-    uid: 6030
-    targeting_method: grain # [compound, glob] also supported
-    config:
-      data_dir: /var/lib/zookeeper/data
-      port: 2181
-      jmx_port: 2183
-      snap_count: None
-      snap_retain_count: 3
-      purge_interval: None
-      max_client_cnxns: None
-      max_perm_size: 128
-      max_heap_size: 1024
-      initial_heap_size: 256
-      jvm_opts: None
-      log_level: INFO
+  source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
+  version: 3.4.6
+  prefix: /usr/lib
+  uid: 6030
+  hosts_target: 'roles:zookeeper'
+  targeting_method: grain # [compound, glob] also supported
+  hosts_function: network.get_hostname
+  config:
+    data_dir: /var/lib/zookeeper/data
+    port: 2181
+    jmx_port: 2183
+    snap_count: None
+    snap_retain_count: 3
+    purge_interval: None
+    max_client_cnxns: None
+    max_perm_size: 128
+    max_heap_size: 1024
+    initial_heap_size: 256
+    jvm_opts: None
+    log_level: INFO
 
-mine_functions:
-  network.interfaces: []
-  test.ping: []
 
-# you can override everything in config: locally with grains, additionally there is support for
-# the bind_address grain
+# Configure Salt Mine function with parameters used in zookeeper:hosts_function
+#
+# mine_functions:
+#   network.ip_addrs:
+#     interface: eth0
+
+# You can override everything in config: locally with grains, additionally
+# there is support for the bind_address grain
 #
 # zookeeper:
 #   config:
-#     bind_address: /var/lib/zookeeper/data
+#     bind_address: 0.0.0.0
+
+
+# vim: filetype=yaml
