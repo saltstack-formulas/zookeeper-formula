@@ -3,21 +3,21 @@
 {%- set g  = salt['grains.get']('zookeeper', {}) %}
 {%- set gc = g.get('config', {}) %}
 
-{%- set default_uid = '6030' %}
+{%- set java_home         = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
+
 # these are global - hence pillar-only
-{%- set uid          = p.get('uid', '6030') %}
-{%- set userhome     = p.get('userhome', '/home/zookeeper') %}
-{%- set prefix       = p.get('prefix', '/usr/lib') %}
-{%- set java_home    = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
+{%- set uid               = p.get('uid', '6030') %}
+{%- set userhome          = p.get('userhome', '/home/zookeeper') %}
+{%- set prefix            = p.get('prefix', '/usr/lib') %}
 
-
-{%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
 {%- set version_name      = 'zookeeper-' + version %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
+
 # bind_address is only supported as a grain, because it has to be host-specific
 {%- set bind_address      = gc.get('bind_address', '0.0.0.0') %}
+
 {%- set data_dir          = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
 {%- set port              = gc.get('port', pc.get('port', '2181')) %}
 {%- set jmx_port          = gc.get('jmx_port', pc.get('jmx_port', '2183')) %}
@@ -25,7 +25,7 @@
 {%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
 {%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
 {%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
-
+{%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
 
 #
 # JVM options - just follow grains/pillar settings for now
@@ -49,9 +49,9 @@
 {%- set real_config_src      = real_home + '/conf' %}
 {%- set real_config_dist     = alt_config + '.dist' %}
 
+{%- set hosts_function       = g.get('hosts_function', p.get('hosts_function', 'network.get_hostname')) %}
 {%- set hosts_target         = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
 {%- set targeting_method     = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
-{%- set hosts_function       = g.get('hosts_function', p.get('hosts_function', 'network.get_hostname')) %}
 
 {%- set force_mine_update    = salt['mine.send'](hosts_function) %}
 {%- set zookeepers_host_dict = salt['mine.get'](hosts_target, hosts_function, targeting_method) %}
@@ -60,10 +60,9 @@
 
 {%- set zookeeper_host_num   = zookeepers_ids | length() %}
 
-{%- if zookeeper_host_num == 0 %}
-  # this will fail to even render but provide a hint as to what's wrong
-  {{ 'No zookeeper nodes are defined (you need to set roles:zookeeper at least for one node in your cluster' }}
-{%- elif zookeeper_host_num is odd %}
+{%- if zookeeper_host_num == 0
+    or zookeeper_host_num is odd %}
+  # 0 means Zookeeper nodes have not been found,
   # for 1, 3, 5 ... nodes just return the list
   {%- set node_count = zookeeper_host_num %}
 {%- elif zookeeper_host_num is even %}
@@ -93,17 +92,15 @@
 
 # a plain list of hostnames
 {%- set zookeepers = zookeepers_with_ids.values() | sort() %}
-# this is the 'safe bet' to use for just connection settings (backwards compatible)
-{%- set zookeeper_host = (zookeepers | first()).split('+') | last() %}
+
 # produce the connection string, sth. like: 'host1:2181,host2:2181,host3:2181'
 {%- set connection_string = [] %}
-
 {%- for n in zookeepers %}
-  {%- do connection_string.append( n.split('+') | last() + ':' + port | string ) %}
+  {%- do connection_string.append( n.split('+') | last() + ':' + port | string() ) %}
 {% endfor %}
 
 # return either the id of the host or an empty string
-{%- set myid = zookeepers_with_ids.get(grains.id, '').split('+')|first() %}
+{%- set myid = zookeepers_with_ids.get(grains.id, '').split('+') | first() %}
 
 {%- set zk = {} %}
 {%- do zk.update( { 'uid': uid,
@@ -129,7 +126,6 @@
                     'purge_interval': purge_interval,
                     'max_client_cnxns': max_client_cnxns,
                     'myid_path': data_dir + '/myid',
-                    'zookeeper_host' : zookeeper_host,
                     'zookeepers' : zookeepers,
                     'zookeepers_with_ids' : zookeepers_with_ids.values(),
                     'connection_string' : ','.join(connection_string),

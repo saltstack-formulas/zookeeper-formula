@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: filetype=yaml
+
 # These are the supported Pillars with their defaults
 
 java_home: /usr/lib/java
@@ -6,9 +9,9 @@ zookeeper:
   version: 3.4.6
   prefix: /usr/lib
   uid: 6030
+  hosts_function: network.get_hostname
   hosts_target: 'roles:zookeeper'
   targeting_method: grain # [compound, glob] also supported
-  hosts_function: network.get_hostname
   config:
     data_dir: /var/lib/zookeeper/data
     port: 2181
@@ -36,6 +39,3 @@ zookeeper:
 # zookeeper:
 #   config:
 #     bind_address: 0.0.0.0
-
-
-# vim: filetype=yaml
