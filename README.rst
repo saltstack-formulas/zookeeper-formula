@@ -167,7 +167,7 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 .. _`Salt Mine`: https://docs.saltstack.com/en/latest/topics/mine/index.html
 .. _`Grain targeting`: https://docs.saltstack.com/en/latest/topics/targeting/grains.html
 .. _`Glob targeting`: https://docs.saltstack.com/en/latest/topics/targeting/globbing.html#globbing
-.. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/grains.html
+.. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/compound.html
 
 
 .. vim: fenc=utf-8 spell spl=en cc=100 tw=99 fo=want sts=2 sw=2 et
