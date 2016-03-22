@@ -1,4 +1,4 @@
-{%- from 'zookeeper/settings.sls' import zk with context %}
+{%- from 'zookeeper/settings.sls' import zk with context -%}
 
 zookeeper:
   group.present:
@@ -31,4 +31,3 @@ install-zookeeper-dist:
     - priority: 30
     - require:
       - cmd: install-zookeeper-dist
-
