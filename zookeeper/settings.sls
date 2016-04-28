@@ -26,7 +26,7 @@
 {%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
 {%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
 {%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
-
+{%- set systemd_script    = pc.get('systemd_script', '/etc/systemd/system/zookeeper.service') %}
 #
 # JVM options - just follow grains/pillar settings for now
 #
@@ -134,4 +134,5 @@
                     'max_perm_size': max_perm_size,
                     'jvm_opts': jvm_opts,
                     'log_level': log_level,
+                    'systemd_script': systemd_script,
                   } ) %}
