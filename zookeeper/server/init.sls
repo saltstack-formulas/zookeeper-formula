@@ -59,6 +59,38 @@ zoo-cfg:
     - contents: |
         {{ zk.myid }}
 
+{%- if grains.get('systemd') %}
+{{ zk.real_config }}/zookeeper.env:
+  file.managed:
+    - source: salt://zookeeper/conf/zookeeper.env
+    - user: root
+    - group: root
+    - mode: 755
+    - template: jinja
+    - context:
+      java_home: {{ zk.java_home }}
+      jmx_port: {{ zk.jmx_port }}
+      initial_heap_size: {{ zk.initial_heap_size }}
+      max_heap_size: {{ zk.max_heap_size }}
+      max_perm_size: {{ zk.max_perm_size }}
+      jvm_opts: {{ zk.jvm_opts }}
+      log_level: {{ zk.log_level }}
+
+{{ zk.systemd_script }}:
+  file.managed:
+    - source: salt://zookeeper/conf/zookeeper.service
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - context:
+      alt_home: {{ zk.alt_home }}
+  module.wait:
+    - name: service.systemctl_reload
+    - watch:
+      - file: {{ zk.systemd_script }}
+{%- else %}
+
 {{ zk.real_config }}/zookeeper-env.sh:
   file.managed:
     - source: salt://zookeeper/conf/zookeeper-env.sh
@@ -76,7 +108,6 @@ zoo-cfg:
       log_level: {{ zk.log_level }}
 
 {%- if zookeeper_map.service_script %}
-
 {{ zookeeper_map.service_script }}:
   file.managed:
     - source: salt://zookeeper/conf/{{ zookeeper_map.service_script_source }}
@@ -86,6 +117,8 @@ zoo-cfg:
     - template: jinja
     - context:
       alt_home: {{ zk.alt_home }}
+{%- endif %}
+{%- endif %}
 
 zookeeper-service:
   service.running:
@@ -95,5 +128,3 @@ zookeeper-service:
       - file: {{ zk.data_dir }}
     - watch:
       - file: zoo-cfg
-
-{%- endif %}

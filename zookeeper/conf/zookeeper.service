@@ -1,0 +1,13 @@
+[Unit]
+Description=Apache Zookeeper
+After=network.target
+
+[Service]
+User=zookeeper
+Group=zookeeper
+SyslogIdentifier=zookeeper
+EnvironmentFile=/etc/zookeeper/conf/zookeeper.env
+ExecStart=/usr/lib/zookeeper/bin/zkServer.sh start-foreground
+
+[Install]
+WantedBy=multi-user.target
