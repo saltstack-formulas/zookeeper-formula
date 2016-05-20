@@ -15,6 +15,9 @@
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
 
+# This tells the state whether or not to restart the service on configuration change
+{%- set restart_on_change = p.get('restart_on_config', 'True') %}
+
 # bind_address is only supported as a grain, because it has to be host-specific
 {%- set bind_address      = gc.get('bind_address', '0.0.0.0') %}
 

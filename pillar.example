@@ -25,7 +25,7 @@ zookeeper:
     initial_heap_size: 256
     jvm_opts: None
     log_level: INFO
-
+  restart_on_config: True
 
 # Configure Salt Mine function with parameters used in zookeeper:hosts_function
 #

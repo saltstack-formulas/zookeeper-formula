@@ -120,6 +120,7 @@ zoo-cfg:
 {%- endif %}
 {%- endif %}
 
+{% if zk.restart_on_change %}
 zookeeper-service:
   service.running:
     - name: zookeeper
@@ -128,3 +129,4 @@ zookeeper-service:
       - file: {{ zk.data_dir }}
     - watch:
       - file: zoo-cfg
+{% endif %}
