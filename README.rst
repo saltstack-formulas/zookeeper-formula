@@ -169,5 +169,14 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 .. _`Glob targeting`: https://docs.saltstack.com/en/latest/topics/targeting/globbing.html#globbing
 .. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/compound.html
 
+``restart_on_config``
+~~~~~~~~~~~~~~~~~~~~~
+
+Restart the Zookeeper service on configuration change. It is recommended to set to True in a single server setup or when you initially deploy your emsemble. However, this is dangerous to allow to happen when deploying a configuration change to a running ensemble, as a rolling restart of each Zookeeper service is recommended.
+
+.. code:: yaml
+
+   zookeeper:
+     restart_on_config: True
 
 .. vim: fenc=utf-8 spell spl=en cc=100 tw=99 fo=want sts=2 sw=2 et
