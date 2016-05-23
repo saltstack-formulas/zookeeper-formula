@@ -138,4 +138,5 @@
                     'jvm_opts': jvm_opts,
                     'log_level': log_level,
                     'systemd_script': systemd_script,
+                    'restart_on_change': restart_on_change,
                   } ) %}
