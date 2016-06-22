@@ -25,6 +25,8 @@ zookeeper:
     initial_heap_size: 256
     jvm_opts: None
     log_level: INFO
+    quorum_port: 2888
+    election_port: 3888
   restart_on_config: True
 
 # Use external service management instead init or systemd.

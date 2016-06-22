@@ -44,6 +44,8 @@ zoo-cfg:
     - template: jinja
     - context:
       port: {{ zk.port }}
+      quorum_port: {{ zk.quorum_port }}
+      election_port: {{ zk.election_port }}
       bind_address: {{ zk.bind_address }}
       data_dir: {{ zk.data_dir }}
       snap_count: {{ zk.snap_count }}

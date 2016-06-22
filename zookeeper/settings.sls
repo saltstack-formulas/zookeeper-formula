@@ -23,6 +23,8 @@
 
 {%- set data_dir          = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
 {%- set port              = gc.get('port', pc.get('port', '2181')) %}
+{%- set quorum_port       = gc.get('quorum_port', pc.get('quorum_port', '2888')) %}
+{%- set election_port     = gc.get('election_port', pc.get('election_port', '3888')) %}
 {%- set jmx_port          = gc.get('jmx_port', pc.get('jmx_port', '2183')) %}
 {%- set snap_count        = gc.get('snap_count', pc.get('snap_count', None)) %}
 {%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
@@ -121,6 +123,8 @@
                     'real_config_dist' : real_config_dist,
                     'java_home' : java_home,
                     'port': port,
+                    'quorum_port': quorum_port,
+                    'election_port': election_port,
                     'jmx_port': jmx_port,
                     'bind_address': bind_address,
                     'data_dir': data_dir,
