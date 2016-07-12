@@ -14,6 +14,14 @@
 {%- set version_name      = 'zookeeper-' + version %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
+{%- set default_md5s = {
+  "3.4.6": "971c379ba65714fd25dc5fe8f14e9ad1",
+  "3.4.8": "6bdddcd5179e9c259ef2bf4be2158d18",
+  "3.4.9": "3e8506075212c2d41030d874fcc9dcd2"
+  }
+%}
+
+{%- set source_md5       = g.get('source_md5', default_md5s.get(version, '00000000000000000000000000000000')) %}
 
 # This tells the state whether or not to restart the service on configuration change
 {%- set restart_on_change = p.get('restart_on_config', 'True') %}
@@ -113,6 +121,7 @@
                     'version_name': version_name,
                     'userhome' : userhome,
                     'source_url': source_url,
+                    'source_md5': source_md5,
                     'myid': myid,
                     'prefix' : prefix,
                     'alt_config' : alt_config,

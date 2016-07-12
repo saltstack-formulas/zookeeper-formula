@@ -5,8 +5,10 @@
 
 java_home: /usr/lib/java
 zookeeper:
-  source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
-  version: 3.4.6
+  source_url: 'http://www.us.apache.org/dist/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz'
+  version: 3.4.9
+  # You can disable md5 checking if you know exactly what you are doing and set the following to an empty string.
+  source_md5: 3e8506075212c2d41030d874fcc9dcd2
   prefix: /usr/lib
   uid: 6030
   hosts_function: network.get_hostname

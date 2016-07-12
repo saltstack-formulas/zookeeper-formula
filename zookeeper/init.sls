@@ -19,11 +19,19 @@ zk-directories:
       - /var/log/zookeeper
 
 install-zookeeper-dist:
+  file.managed:
+    - name: /usr/local/src/{{ zk.version_name }}.tar.gz
+    - source: {{ zk.source_url }}
+{% if zk.source_md5 != "" %}
+    - source_hash: md5={{ zk.source_md5 }}
+{% endif %}
   cmd.run:
-    - name: curl -L '{{ zk.source_url }}' | tar xz --no-same-owner
+    - name: tar xzf /usr/local/src/{{ zk.version_name }}.tar.gz --no-same-owner
     - cwd: {{ zk.prefix }}
     - unless: test -d {{ zk.real_home }}/lib
-    - user: root
+    - runas: root
+    - require:
+      - file: install-zookeeper-dist
   alternatives.install:
     - name: zookeeper-home-link
     - link: {{ zk.alt_home }}
