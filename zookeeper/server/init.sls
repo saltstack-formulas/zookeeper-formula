@@ -59,6 +59,18 @@ zoo-cfg:
     - contents: |
         {{ zk.myid }}
 
+{%- if zk.process_control_system is defined %}
+{%- if zk.restart_on_change %}
+zookeeper-in-supervisord:
+  cmd.run:
+    - name: "{{ zk.pcs_restart_command }}"
+    - require:
+      - pkg: {{ zk.process_control_system }}
+    - onchanges:
+       - file: {{ zk.real_config }}/zoo.cfg
+{% endif %}
+{%- else %}
+
 {%- if grains.get('systemd') %}
 {{ zk.real_config }}/zookeeper.env:
   file.managed:
@@ -129,4 +141,5 @@ zookeeper-service:
       - file: {{ zk.data_dir }}
     - watch:
       - file: zoo-cfg
+{% endif %}
 {% endif %}
