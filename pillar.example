@@ -27,6 +27,10 @@ zookeeper:
     log_level: INFO
   restart_on_config: True
 
+# Use external service management instead init or systemd.
+# process_control_system: supervisor # You can use whatever you want not just Supervisord.
+# pcs_restart_command: 'supervisorctl restart zookeeper'
+
 # Configure Salt Mine function with parameters used in zookeeper:hosts_function
 #
 # mine_functions:
