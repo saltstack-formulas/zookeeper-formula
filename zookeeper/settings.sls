@@ -14,6 +14,14 @@
 {%- set version_name      = 'zookeeper-' + version %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
+{%- set default_md5s = {
+  "3.4.6": "971c379ba65714fd25dc5fe8f14e9ad1",
+  "3.4.8": "6bdddcd5179e9c259ef2bf4be2158d18",
+  "3.4.9": "3e8506075212c2d41030d874fcc9dcd2"
+  }
+%}
+
+{%- set source_md5       = g.get('source_md5', default_md5s.get(version, '00000000000000000000000000000000')) %}
 
 # This tells the state whether or not to restart the service on configuration change
 {%- set restart_on_change = p.get('restart_on_config', 'True') %}
@@ -23,6 +31,8 @@
 
 {%- set data_dir          = gc.get('data_dir', pc.get('data_dir', '/var/lib/zookeeper/data')) %}
 {%- set port              = gc.get('port', pc.get('port', '2181')) %}
+{%- set quorum_port       = gc.get('quorum_port', pc.get('quorum_port', '2888')) %}
+{%- set election_port     = gc.get('election_port', pc.get('election_port', '3888')) %}
 {%- set jmx_port          = gc.get('jmx_port', pc.get('jmx_port', '2183')) %}
 {%- set snap_count        = gc.get('snap_count', pc.get('snap_count', None)) %}
 {%- set snap_retain_count = gc.get('snap_retain_count', pc.get('snap_retain_count', 3)) %}
@@ -111,6 +121,7 @@
                     'version_name': version_name,
                     'userhome' : userhome,
                     'source_url': source_url,
+                    'source_md5': source_md5,
                     'myid': myid,
                     'prefix' : prefix,
                     'alt_config' : alt_config,
@@ -121,6 +132,8 @@
                     'real_config_dist' : real_config_dist,
                     'java_home' : java_home,
                     'port': port,
+                    'quorum_port': quorum_port,
+                    'election_port': election_port,
                     'jmx_port': jmx_port,
                     'bind_address': bind_address,
                     'data_dir': data_dir,
