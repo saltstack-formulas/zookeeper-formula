@@ -25,7 +25,7 @@ zookeeper:
     max_perm_size: 128
     max_heap_size: 1024
     initial_heap_size: 256
-    jvm_opts: None
+    jvm_opts: ''
     log_level: INFO
     quorum_port: 2888
     election_port: 3888
