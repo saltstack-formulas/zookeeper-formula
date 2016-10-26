@@ -16,12 +16,13 @@
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
 {%- set default_md5s = {
   "3.4.6": "971c379ba65714fd25dc5fe8f14e9ad1",
+  "3.4.7": "58b515d1c1352e135d17c9a9a9ffedd0",
   "3.4.8": "6bdddcd5179e9c259ef2bf4be2158d18",
   "3.4.9": "3e8506075212c2d41030d874fcc9dcd2"
   }
 %}
 
-{%- set source_md5       = g.get('source_md5', default_md5s.get(version, '00000000000000000000000000000000')) %}
+{%- set source_md5       = p.get('source_md5', default_md5s.get(version, '00000000000000000000000000000000')) %}
 
 # This tells the state whether or not to restart the service on configuration change
 {%- set restart_on_change = p.get('restart_on_config', 'True') %}
