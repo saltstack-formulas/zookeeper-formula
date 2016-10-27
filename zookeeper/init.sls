@@ -22,9 +22,11 @@ install-zookeeper-dist:
   file.managed:
     - name: /usr/local/src/{{ zk.version_name }}.tar.gz
     - source: {{ zk.source_url }}
-{% if zk.source_md5 != "" %}
+{%- if zk.source_md5 != "" %}
     - source_hash: md5={{ zk.source_md5 }}
-{% endif %}
+{%- else %}
+    - skip_verify: True
+{%- endif %}
   cmd.run:
     - name: tar xzf /usr/local/src/{{ zk.version_name }}.tar.gz --no-same-owner
     - cwd: {{ zk.prefix }}
