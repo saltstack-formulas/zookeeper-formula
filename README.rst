@@ -29,18 +29,21 @@ the package.
 ``zookeeper.server``
 --------------------
 
-Installs the server configuration and enables and starts the zookeeper service.
-Only works if 'zookeeper' is one of the roles (grains) of the node. This separation
-allows for nodes to have the zookeeper libs and environment available without running the service.
+Installs the server configuration and enables and starts the Zookeeper service. Only works if
+``zookeeper`` is one of the roles (set via Grains) of the node. This separation allows for nodes to
+have the Zookeeper libs and environment available without running the service.
 
 Zookeeper Role and Client Connection String
 ===========================================
+
+Deploying a Cluster
+-------------------
 
 The implementation depends on the existence of the ``roles`` grain in your minion configuration -
 at least one minion in your network has to have the **zookeeper** role which means that it is a
 Zookeeper server.
 
-You could assign the role with following command executed from your Master:
+You could assign the role with following command executed from your Salt Master:
 
 .. code:: console
 
@@ -77,11 +80,31 @@ And this will also work for single-node configurations. Whenever you have more t
 the ``zookeeper`` role the formula will setup a Zookeeper cluster, whenever there is an even number
 it will be (number - 1).
 
-.. note::
+Standalone Independent Server
+-----------------------------
 
-  Standalone Zookeeper server would be installed and configured by explicitly applying
-  ``zookeeper.server`` state to the Minion without any roles assigned. But in this case the server
-  will not appear in ``connection_string`` variable from ``zookeeper/settings.sls``.
+Standalone Zookeeper server would be installed and configured by explicitly applying
+``zookeeper.server`` state to the Minion without any roles assigned. But in this case the server
+will not appear in the ``connection_string`` variable from ``zookeeper/settings.sls``.
+
+To be able to get a proper connection string like described above with only one Zookeeper server
+running independently, set the following Pillar:
+
+.. code:: yaml
+
+  zookeeper:
+    hosts_target: "{{ grains['id'] }}"
+    targeting_method: 'glob'
+
+This configures a single-node Zookeeper cluster on a machine which is able to read the Pillar from
+above, and allows to get proper value from the ``connection_string`` to configure client apps.
+
+Also, you may want to bind Zookeeper to the particular network address or localhost. Set the Grain
+like this on your minion before applying ``zookeeper.server`` state:
+
+.. code:: console
+
+  salt zookeper.example.com grains.set zookeeper:config:bind_address 127.0.0.1
 
 Customisations in Pillar or Grains
 ----------------------------------
