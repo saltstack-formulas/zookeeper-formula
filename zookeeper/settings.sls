@@ -40,7 +40,7 @@
 {%- set purge_interval    = gc.get('purge_interval', pc.get('purge_interval', None)) %}
 {%- set max_client_cnxns  = gc.get('max_client_cnxns', pc.get('max_client_cnxns', None)) %}
 {%- set log_level         = gc.get('log_level', pc.get('log_level', 'INFO')) %}
-{%- set systemd_script    = pc.get('systemd_script', '/etc/systemd/system/zookeeper.service') %}
+{%- set systemd_unit      = pc.get('systemd_unit', '/etc/systemd/system/zookeeper.service') %}
 #
 # JVM options - just follow grains/pillar settings for now
 #
@@ -54,7 +54,7 @@
 {%- set max_perm_size        = gc.get('max_perm_size', pc.get('max_perm_size', 128)) %}
 {%- set max_heap_size        = gc.get('max_heap_size', pc.get('max_heap_size', 1024)) %}
 {%- set initial_heap_size    = gc.get('initial_heap_size', pc.get('initial_heap_size', 256)) %}
-{%- set jvm_opts             = gc.get('jvm_opts', pc.get('jvm_opts', None)) %}
+{%- set jvm_opts             = gc.get('jvm_opts', pc.get('jvm_opts', '')) %}
 
 {%- set alt_config           = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
 {%- set real_config          = alt_config + '-' + version %}
@@ -151,6 +151,6 @@
                     'max_perm_size': max_perm_size,
                     'jvm_opts': jvm_opts,
                     'log_level': log_level,
-                    'systemd_script': systemd_script,
+                    'systemd_unit': systemd_unit,
                     'restart_on_change': restart_on_change,
                   } ) %}
