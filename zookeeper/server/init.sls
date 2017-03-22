@@ -28,7 +28,12 @@ zookeeper-config-link:
     - link: {{ zk.alt_config }}
     - path: {{ zk.real_config }}
     - priority: 30
-
+  file.symlink:
+    - name: {{ zk.alt_config }}
+    - target: {{ zk.real_config }}
+    - require:
+      - alternatives: zookeeper-config-link
+      
 zookeeper-config-dir:
   file.symlink:
     - name: {{ zk.real_home }}/conf

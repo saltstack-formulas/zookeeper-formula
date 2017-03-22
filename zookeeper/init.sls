@@ -27,17 +27,30 @@ install-zookeeper-dist:
 {%- else %}
     - skip_verify: True
 {%- endif %}
+    - unless: test -d {{ zk.real_home }}/lib
   cmd.run:
     - name: tar xzf /usr/local/src/{{ zk.version_name }}.tar.gz --no-same-owner
     - cwd: {{ zk.prefix }}
-    - unless: test -d {{ zk.real_home }}/lib
+    - unless: test -d {{ zk.real_home }}/lib || ! test -f /usr/local/src/{{ zk.version_name }}.tar.gz
     - runas: root
     - require:
       - file: install-zookeeper-dist
+      
+zookeeper-home-link:
   alternatives.install:
-    - name: zookeeper-home-link
     - link: {{ zk.alt_home }}
     - path: {{ zk.real_home }}
     - priority: 30
     - require:
       - cmd: install-zookeeper-dist
+  file.symlink:
+    - name: {{ zk.alt_home }}
+    - target: {{ zk.real_home }}
+    - require:
+      - alternatives: zookeeper-home-link
+      
+remove_zookeeper_tar:
+  file.absent:
+    - name: /usr/local/src/{{ zk.version_name }}.tar.gz
+    - require:
+      - install-zookeeper-dist

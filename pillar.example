@@ -47,3 +47,16 @@ zookeeper:
 # zookeeper:
 #   config:
 #     bind_address: 0.0.0.0
+
+# If you want to provide your own list of zookeeper nodes you can use zookeeper:nodes parameter. 
+# In this case targeting method will not be used.
+# As a node identifier you can use hostname, IP address, fqdn, minion id.
+# You cannot use an IP address of the proxy server which redirects requests to the zookeeper node. 
+# You can use hostname of the proxy server which redirects requests to the zookeeper node only if 
+# zookeeper node has the same hostname as the proxy does.
+#
+# zookeeper:
+#   nodes:
+#     - 192.168.0.101
+#     - minion2
+#     - zookeeper3.mysite.com
