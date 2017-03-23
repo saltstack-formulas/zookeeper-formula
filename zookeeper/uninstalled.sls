@@ -1,6 +1,11 @@
 {%- from 'zookeeper/settings.sls' import zk with context -%}
 {%- from 'zookeeper/map.jinja' import zookeeper_map with context -%}
 
+zookeeper-service-stopped:
+  service.dead:
+    - name: zookeeper
+    - enable: False
+
 zk-directories-removed:
   file.absent:
     - names:
@@ -9,17 +14,27 @@ zk-directories-removed:
       - /var/log/zookeeper
       - {{ zk.real_home }}
       - {{ zk.alt_home }}
-      - /etc/init.d/zookeeper
       - {{ zk.real_config }}
       - {{ zk.alt_config }}
       - {{ zk.systemd_unit }}
       - {{ zookeeper_map.service_script }}
-      
-zookeeper-config-link-remove:
+    - require:
+      - service: zookeeper-service-stopped
+  
+{%- if grains.get('systemd') %}
+zookeeper-reload-systemctl:
+  module.run:
+    - name: service.systemctl_reload
+    - require:
+      - file: zk-directories-removed
+{%- endif %}
+  
+zookeeper-config-link-removed:
   alternatives.remove:
+    - name: zookeeper-config-link
     - path: {{ zk.real_config }}
 
-zookeeper-home-link-remove:
+zookeeper-home-link-removed:
   alternatives.remove:
     - name: zookeeper-home-link
     - path: {{ zk.real_home }}

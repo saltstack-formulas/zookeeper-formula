@@ -30,8 +30,14 @@ the package.
 --------------------
 
 Installs the server configuration and enables and starts the Zookeeper service. Only works if
-``zookeeper`` is one of the roles (set via Grains) of the node. This separation allows for nodes to
-have the Zookeeper libs and environment available without running the service.
+either ``zookeeper`` is one of the roles (set via Grains) of the node or the node is listed in 
+``zookeeper:nodes`` (in either Grains or Pillar). This separation allows for nodes to have the 
+Zookeeper libs and environment available without running the service.
+
+``zookeeper.uninstalled``
+--------------------
+
+Uninstalls the Zookeeper and disables and stops the Zookeeper service.
 
 Zookeeper Role and Client Connection String
 ===========================================
@@ -192,6 +198,49 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 .. _`Glob targeting`: https://docs.saltstack.com/en/latest/topics/targeting/globbing.html#globbing
 .. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/compound.html
 
+``nodes``
+~~~~~~~~~~~~~~~~~~~~
+
+If you want to provide your own list of zookeeper nodes you can use ``nodes`` parameter. In this 
+case targeting method will not be used.
+
+As a node identifier you can use hostname, IP address, fqdn, minion id.
+You cannot use an IP address of the proxy server which redirects requests to the zookeeper node.
+You can use hostname of the proxy server which redirects requests to the zookeeper node only if
+zookeeper node has the same hostname as the proxy does.
+
+**Examples**:
+
+IP addresses usage:
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - 192.168.0.101
+      - 192.168.0.102
+      - 192.168.0.103
+
+Minion id usage:
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - minion1
+      - minion2
+      - minion3
+
+Mixed usage (IP, minion id, fqdn):
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - 192.168.0.101
+      - minion2
+      - zookeeper3.mysite.com
+      
 ``restart_on_config``
 ~~~~~~~~~~~~~~~~~~~~~
 
