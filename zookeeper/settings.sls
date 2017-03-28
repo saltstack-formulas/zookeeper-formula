@@ -77,7 +77,11 @@
   {%- set zookeeper_nodes   = p.get('nodes', []) %}
 {%- else %}
   {%- set force_mine_update = salt['mine.send'](hosts_function) %}
-  {%- set zookeeper_nodes   = salt['mine.get'](hosts_target, hosts_function, targeting_method) %}
+  {%- set zookeepers_mined  = salt['mine.get'](hosts_target,
+                                               hosts_function,
+                                               targeting_method)|
+                                               default({}, true) %}
+  {%- set zookeeper_nodes   = zookeepers_mined.values()|sort %}
 {%- endif %}
 
 {%- for node in zookeeper_nodes %}
