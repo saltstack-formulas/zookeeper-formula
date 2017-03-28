@@ -94,15 +94,9 @@
     {%- if node in (salt['network.get_hostname'](),
                 grains['id'],
                 grains['fqdn'],
-                grains['nodename']) %}
+                grains['nodename']) 
+                or node in minion_ips %}
       {%- do myid_dist.append(node_id)  %}
-    {%- else %}
-      {%- for minion_ip in minion_ips %}
-        {%- if node == minion_ip %}
-          {%- do myid_dist.append(node_id)  %}
-          {% break %}
-        {%- endif %}
-      {%- endfor %}
     {%- endif %}
   {%- endif %}
 {%- endfor %}
