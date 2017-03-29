@@ -67,54 +67,45 @@
 {%- set hosts_target         = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
 {%- set targeting_method     = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
 
-{%- set force_mine_update    = salt['mine.send'](hosts_function) %}
-{%- set zookeepers_host_dict = salt['mine.get'](hosts_target, hosts_function, targeting_method) %}
-{%- set zookeepers_ids       = zookeepers_host_dict.keys() %}
-{%- set zookeepers_hosts     = zookeepers_host_dict.values() %}
+{%- set zookeepers_with_ids = [] %}
+{%- set zookeepers          = [] %}
+{%- set myid_dist           = [] %}
+{%- set connection_string   = [] %}
+{%- set minion_ips          = salt['network.ip_addrs']() %}
 
-{%- set zookeeper_host_num   = zookeepers_ids | length() %}
-
-{%- if zookeeper_host_num == 0
-    or zookeeper_host_num is odd %}
-  # 0 means Zookeeper nodes have not been found,
-  # for 1, 3, 5 ... nodes just return the list
-  {%- set node_count = zookeeper_host_num %}
-{%- elif zookeeper_host_num is even %}
-  # for 2, 4, 6 ... nodes return (n -1)
-  {%- set node_count = zookeeper_host_num - 1 %}
+{% if p.get('nodes') %}
+  {%- set zookeeper_nodes   = p.get('nodes', []) %}
+{%- else %}
+  {%- set force_mine_update = salt['mine.send'](hosts_function) %}
+  {%- set zookeepers_mined  = salt['mine.get'](hosts_target,
+                                               hosts_function,
+                                               targeting_method)|
+                                               default({}, true) %}
+  {%- set zookeeper_nodes   = zookeepers_mined.values()|sort %}
 {%- endif %}
 
-# yes, this is not pretty, but produces sth like:
-# {'node1': '0+node1', 'node2': '1+node2', 'node3': '2+node2'}
-{%- set zookeepers_with_ids = {} %}
-{%- for i in range(node_count) %}
-  {%- if zookeepers_hosts[i] is string %}
-    # get plain value from Zookeeper hosts fetched by the Mine function
-    {%- set node_addr = zookeepers_hosts[i] %}
-  {%- elif zookeepers_hosts[i] is sequence %}
-    # if list provided, take the first value
-    {%- set node_addr = zookeepers_hosts[i] | first() %}
-  {%- else %}
-    # skip any other values including nested dicts
-    {%- set node_addr = '' %}
-  {%- endif %}
-
-  {%- if node_addr %}
-    {%- do zookeepers_with_ids.update({zookeepers_ids[i] : '{0:d}'.format(i) + '+' + node_addr })  %}
+{%- for node in zookeeper_nodes %}
+  {%- set node_id = loop.index %}
+  {%- set zookeeper_with_id = {"id": node_id, "address": node.encode('ascii')} %}
+  {%- do zookeepers_with_ids.append(zookeeper_with_id)  %}
+  {%- do connection_string.append( node.encode('ascii') + ':' + port | string() ) %}
+  {%- do zookeepers.append( node.encode('ascii') ) %}
+  {%- if myid_dist|length == 0 %}    
+    {%- if node in (salt['network.get_hostname'](),
+                grains['id'],
+                grains['fqdn'],
+                grains['nodename']) 
+                or node in minion_ips %}
+      {%- do myid_dist.append(node_id)  %}
+    {%- endif %}
   {%- endif %}
 {%- endfor %}
 
-# a plain list of hostnames
-{%- set zookeepers = zookeepers_with_ids.values() | sort() %}
-
-# produce the connection string, sth. like: 'host1:2181,host2:2181,host3:2181'
-{%- set connection_string = [] %}
-{%- for n in zookeepers %}
-  {%- do connection_string.append( n.split('+') | last() + ':' + port | string() ) %}
-{% endfor %}
-
-# return either the id of the host or an empty string
-{%- set myid = zookeepers_with_ids.get(grains.id, '').split('+') | first() %}
+{%- if myid_dist|length > 0 %}
+  {%- set myid = myid_dist[0] %}
+{%- else %}
+  {%- set myid = None %}
+{%- endif %}
 
 {%- set zk = {} %}
 {%- do zk.update( { 'uid': uid,
@@ -144,7 +135,7 @@
                     'max_client_cnxns': max_client_cnxns,
                     'myid_path': data_dir + '/myid',
                     'zookeepers' : zookeepers,
-                    'zookeepers_with_ids' : zookeepers_with_ids.values(),
+                    'zookeepers_with_ids' : zookeepers_with_ids,
                     'connection_string' : ','.join(connection_string),
                     'initial_heap_size': initial_heap_size,
                     'max_heap_size': max_heap_size,
