@@ -74,7 +74,7 @@
 {%- set minion_ips          = salt['network.ip_addrs']() %}
 
 {% if p.get('nodes') %}
-  {%- set zookeeper_nodes   = p.get('nodes', []) %}
+  {%- set zookeeper_nodes   = g.get('nodes', p.get('nodes', [])) %}
 {%- else %}
   {%- set force_mine_update = salt['mine.send'](hosts_function) %}
   {%- set zookeepers_mined  = salt['mine.get'](hosts_target,
