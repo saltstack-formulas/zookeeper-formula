@@ -198,16 +198,18 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 .. _`Glob targeting`: https://docs.saltstack.com/en/latest/topics/targeting/globbing.html#globbing
 .. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/compound.html
 
-``nodes``
+``clusters``
 ~~~~~~~~~~~~~~~~~~~~
 
-If you want to provide your own list of zookeeper nodes you can use ``nodes`` parameter. In this 
-case targeting method will not be used.
+In case you need several separate Zookeeper clusters you can use ``zookeeper:clusters`` parameter 
+where you can specify a node list for each of your cluster with the ``nodes`` parameter. 
+In this case targeting method will not be used.
 
 As a node identifier you can use hostname, IP address, fqdn, minion id.
 You cannot use an IP address of the proxy server which redirects requests to the zookeeper node.
 You can use hostname of the proxy server which redirects requests to the zookeeper node only if
 zookeeper node has the same hostname as the proxy does.
+You cannot use the same minion for two different clusters.
 
 **Examples**:
 
@@ -216,31 +218,46 @@ IP addresses usage:
 .. code:: yaml
 
   zookeeper:
-    nodes:
-      - 192.168.0.101
-      - 192.168.0.102
-      - 192.168.0.103
-
+    clusters:
+      - nodes:
+        - 192.168.0.101
+        - 192.168.0.102
+        - 192.168.0.103
+      - nodes:
+        - 192.168.1.101
+        - 192.168.1.102
+        - 192.168.1.103
+        
 Minion id usage:
 
 .. code:: yaml
 
   zookeeper:
-    nodes:
-      - minion1
-      - minion2
-      - minion3
+    clusters:
+      - nodes:
+        - minion1
+        - minion2
+        - minion3
+      - nodes:
+        - minion4
+        - minion5
+        - minion6
 
 Mixed usage (IP, minion id, fqdn):
 
 .. code:: yaml
 
   zookeeper:
-    nodes:
-      - 192.168.0.101
-      - minion2
-      - zookeeper3.mysite.com
-      
+    clusters:
+      - nodes:
+        - 192.168.0.101
+        - minion2
+        - zookeeper3.cluster1.mysite.com
+      - nodes:
+        - 192.168.1.101
+        - minion-hostname5
+        - zookeeper3.cluster2.mysite.com
+
 ``restart_on_config``
 ~~~~~~~~~~~~~~~~~~~~~
 

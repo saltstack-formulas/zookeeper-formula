@@ -69,12 +69,29 @@
 
 {%- set zookeepers_with_ids = [] %}
 {%- set zookeepers          = [] %}
-{%- set myid_dist           = [] %}
+{%- set myid_tmp            = [] %}
 {%- set connection_string   = [] %}
-{%- set minion_ips          = salt['network.ip_addrs']() %}
+{%- set minion_ids          = [salt['network.get_hostname'](),
+                               grains['id'],
+                               grains['fqdn'],
+                               grains['nodename']] + salt['network.ip_addrs']() %}
 
-{% if p.get('nodes') %}
-  {%- set zookeeper_nodes   = g.get('nodes', p.get('nodes', [])) %}
+{% if p.get('clusters') %}
+  {%- set zookeeper_nodes_tmp   = [] %}
+  {%- for cluster in p.get('clusters', []) %}
+    {%- set nodes   = cluster.get('nodes', []) %}
+    {%- for node in nodes %}
+      {%- if node in minion_ids %}
+        {%- do zookeeper_nodes_tmp.append(nodes)  %}
+        {%- do myid_tmp.append(loop.index)  %}
+        {%- break %}
+      {%- endif %}
+    {%- endfor %}
+    {%- if zookeeper_nodes_tmp|length != 0 %} 
+      {%- break %}
+    {%- endif %}
+  {%- endfor %}
+  {%- set zookeeper_nodes   = zookeeper_nodes_tmp[0] if zookeeper_nodes_tmp|length !=0 else [] %}  
 {%- else %}
   {%- set force_mine_update = salt['mine.send'](hosts_function) %}
   {%- set zookeepers_mined  = salt['mine.get'](hosts_target,
@@ -90,19 +107,15 @@
   {%- do zookeepers_with_ids.append(zookeeper_with_id)  %}
   {%- do connection_string.append( node.encode('ascii') + ':' + port | string() ) %}
   {%- do zookeepers.append( node.encode('ascii') ) %}
-  {%- if myid_dist|length == 0 %}    
-    {%- if node in (salt['network.get_hostname'](),
-                grains['id'],
-                grains['fqdn'],
-                grains['nodename']) 
-                or node in minion_ips %}
-      {%- do myid_dist.append(node_id)  %}
+  {%- if myid_tmp|length == 0 %}    
+    {%- if node in minion_ids %}
+      {%- do myid_tmp.append(node_id)  %}
     {%- endif %}
   {%- endif %}
 {%- endfor %}
 
-{%- if myid_dist|length > 0 %}
-  {%- set myid = myid_dist[0] %}
+{%- if myid_tmp|length > 0 %}
+  {%- set myid = myid_tmp[0] %}
 {%- else %}
   {%- set myid = None %}
 {%- endif %}

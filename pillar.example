@@ -48,15 +48,22 @@ zookeeper:
 #   config:
 #     bind_address: 0.0.0.0
 
-# If you want to provide your own list of zookeeper nodes you can use zookeeper:nodes parameter. 
+# In case you need several separate Zookeeper clusters you can use `zookeeper:clusters` parameter 
+# where you can specify a node list for each of your cluster with the `nodes` parameter. 
 # In this case targeting method will not be used.
 # As a node identifier you can use hostname, IP address, fqdn, minion id.
 # You cannot use an IP address of the proxy server which redirects requests to the zookeeper node. 
 # You can use hostname of the proxy server which redirects requests to the zookeeper node only if 
 # zookeeper node has the same hostname as the proxy does.
-#
+# You cannot use the same minion for two different clusters.
+# 
 # zookeeper:
-#   nodes:
-#     - 192.168.0.101
-#     - minion2
-#     - zookeeper3.mysite.com
+#   clusters:
+#     - nodes:
+#       - 192.168.0.101
+#       - minion2
+#       - zookeeper3.cluster1.mysite.com
+#     - nodes:
+#       - 192.168.1.101
+#       - minion-hostname5
+#       - zookeeper3.cluster2.mysite.com
