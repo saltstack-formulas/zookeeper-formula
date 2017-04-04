@@ -80,22 +80,26 @@
 {% if p.get('nodes') %}
   {%- set zookeeper_nodes   = p.get('nodes', []) %}
 {% elif p.get('clusters') and cluster_id != None %}
-  {%- set zookeeper_nodes   = p.get('clusters').get(cluster_id, []) %}  
+  {%- set zookeeper_nodes   = p.get('clusters').get(cluster_id, []) %}
 {% elif p.get('clusters') %}
   {%- set zookeeper_nodes_tmp   = [] %}
-  {% for cluster, nodes in p.get('clusters').iteritems() %}
-    {%- for node in nodes %}
-      {%- if node in minion_ids %}
-        {%- do zookeeper_nodes_tmp.append(nodes)  %}
-        {%- do myid_tmp.append(loop.index)  %}
+  {%- if p.get('clusters')|length == 1 %}
+    {%- set zookeeper_nodes   = p.get('clusters').values()[0] %}
+  {%- else %}
+    {% for cluster, nodes in p.get('clusters').iteritems() %}
+      {%- for node in nodes %}
+        {%- if node in minion_ids %}
+          {%- do zookeeper_nodes_tmp.append(nodes)  %}
+          {%- do myid_tmp.append(loop.index)  %}
+          {%- break %}
+        {%- endif %}
+      {%- endfor %}
+      {%- if zookeeper_nodes_tmp|length != 0 %} 
         {%- break %}
       {%- endif %}
-    {%- endfor %}
-    {%- if zookeeper_nodes_tmp|length != 0 %} 
-      {%- break %}
-    {%- endif %}
-  {% endfor %}
-  {%- set zookeeper_nodes   = zookeeper_nodes_tmp[0] if zookeeper_nodes_tmp|length !=0 else [] %}  
+    {% endfor %}
+    {%- set zookeeper_nodes   = zookeeper_nodes_tmp[0] if zookeeper_nodes_tmp|length !=0 else [] %}  
+  {%- endif %}
 {%- else %}
   {%- set force_mine_update = salt['mine.send'](hosts_function) %}
   {%- set zookeepers_mined  = salt['mine.get'](hosts_target,
