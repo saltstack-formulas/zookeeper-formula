@@ -77,6 +77,8 @@
                                grains['fqdn'],
                                grains['nodename']] + salt['network.ip_addrs']() %}
 
+{% if p.get('nodes') %}
+  {%- set zookeeper_nodes   = p.get('nodes', []) %}
 {% if p.get('clusters') and cluster_id != None %}
   {%- set zookeeper_nodes   = p.get('clusters').get(cluster_id, []) %}  
 {% elif p.get('clusters') %}
