@@ -67,6 +67,7 @@
 {%- set hosts_target         = g.get('hosts_target', p.get('hosts_target', 'roles:zookeeper')) %}
 {%- set targeting_method     = g.get('targeting_method', p.get('targeting_method', 'grain')) %}
 
+{%- set cluster_id     = g.get('cluster_id', p.get('cluster_id', None)) %}
 {%- set zookeepers_with_ids = [] %}
 {%- set zookeepers          = [] %}
 {%- set myid_tmp            = [] %}
@@ -76,10 +77,11 @@
                                grains['fqdn'],
                                grains['nodename']] + salt['network.ip_addrs']() %}
 
-{% if p.get('clusters') %}
+{% if p.get('clusters') and cluster_id != None %}
+  {%- set zookeeper_nodes   = p.get('clusters').get(cluster_id, []) %}  
+{% elif p.get('clusters') %}
   {%- set zookeeper_nodes_tmp   = [] %}
-  {%- for cluster in p.get('clusters', []) %}
-    {%- set nodes   = cluster.get('nodes', []) %}
+  {% for cluster, nodes in p.get('clusters').iteritems() %}
     {%- for node in nodes %}
       {%- if node in minion_ids %}
         {%- do zookeeper_nodes_tmp.append(nodes)  %}
@@ -90,7 +92,7 @@
     {%- if zookeeper_nodes_tmp|length != 0 %} 
       {%- break %}
     {%- endif %}
-  {%- endfor %}
+  {% endfor %}
   {%- set zookeeper_nodes   = zookeeper_nodes_tmp[0] if zookeeper_nodes_tmp|length !=0 else [] %}  
 {%- else %}
   {%- set force_mine_update = salt['mine.send'](hosts_function) %}
