@@ -198,11 +198,54 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 .. _`Glob targeting`: https://docs.saltstack.com/en/latest/topics/targeting/globbing.html#globbing
 .. _`Compound matcher`: https://docs.saltstack.com/en/latest/topics/targeting/compound.html
 
+``nodes``
+~~~~~~~~~~~~~~~~~~~~
+
+If you want to provide your own list of zookeeper nodes you can use ``nodes`` parameter. In this 
+case targeting method and ``clusters`` parameter will not be used.
+
+As a node identifier you can use hostname, IP address, fqdn, minion id.
+You cannot use an IP address of the proxy server which redirects requests to the zookeeper node.
+You can use hostname of the proxy server which redirects requests to the zookeeper node only if
+zookeeper node has the same hostname as the proxy does.
+
+**Examples**:
+
+IP addresses usage:
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - 192.168.0.101
+      - 192.168.0.102
+      - 192.168.0.103
+
+Minion id usage:
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - minion1
+      - minion2
+      - minion3
+
+Mixed usage (IP, minion id, fqdn):
+
+.. code:: yaml
+
+  zookeeper:
+    nodes:
+      - 192.168.0.101
+      - minion2
+      - zookeeper3.mysite.com
+
 ``clusters``
 ~~~~~~~~~~~~~~~~~~~~
 
 In case you need several separate Zookeeper clusters you can use ``zookeeper:clusters`` parameter 
-where you can specify a node list for each of your cluster with the ``nodes`` parameter. 
+where you can specify a node list for each of your cluster. 
 In this case targeting method will not be used.
 
 As a node identifier you can use hostname, IP address, fqdn, minion id.
@@ -228,22 +271,22 @@ IP addresses usage:
         - 192.168.1.102
         - 192.168.1.103
         
-Minion id usage:
+Fqdn usage:
 
 .. code:: yaml
 
   zookeeper:
     clusters:
-      - nodes:
-        - minion1
-        - minion2
-        - minion3
-      - nodes:
-        - minion4
-        - minion5
-        - minion6
+      cluster1:
+        - zookeeper1.cluster1.mysite.com
+        - zookeeper2.cluster1.mysite.com
+        - zookeeper3.cluster1.mysite.com
+      cluster2:
+        - zookeeper1.cluster2.mysite.com
+        - zookeeper2.cluster2.mysite.com
+        - zookeeper3.cluster2.mysite.com
 
-Mixed usage (IP, minion id, fqdn):
+Mixed usage (IP, hostname, fqdn):
 
 .. code:: yaml
 
