@@ -70,7 +70,7 @@
 {%- set cluster_id     = g.get('cluster_id', p.get('cluster_id', None)) %}
 {%- set zookeepers_with_ids = [] %}
 {%- set zookeepers          = [] %}
-{%- set myid_tmp            = [] %}
+{%- set myid_dist            = [] %}
 {%- set connection_string   = [] %}
 {%- set minion_ids          = [salt['network.get_hostname'](),
                                grains['id'],
@@ -90,7 +90,6 @@
       {%- for node in nodes %}
         {%- if node in minion_ids %}
           {%- do zookeeper_nodes_tmp.append(nodes)  %}
-          {%- do myid_tmp.append(loop.index)  %}
           {%- break %}
         {%- endif %}
       {%- endfor %}
@@ -115,15 +114,13 @@
   {%- do zookeepers_with_ids.append(zookeeper_with_id)  %}
   {%- do connection_string.append( node.encode('ascii') + ':' + port | string() ) %}
   {%- do zookeepers.append( node.encode('ascii') ) %}
-  {%- if myid_tmp|length == 0 %}    
-    {%- if node in minion_ids %}
-      {%- do myid_tmp.append(node_id)  %}
-    {%- endif %}
+  {%- if not myid_dist and node in minion_ids %}    
+    {%- do myid_dist.append(node_id)  %}
   {%- endif %}
 {%- endfor %}
 
-{%- if myid_tmp|length > 0 %}
-  {%- set myid = myid_tmp[0] %}
+{%- if myid_dist|length > 0 %}
+  {%- set myid = myid_dist[0] %}
 {%- else %}
   {%- set myid = None %}
 {%- endif %}
