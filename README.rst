@@ -57,6 +57,9 @@ You could assign the role with following command executed from your Salt Master:
 
 The formula gathers Zookeeper node addresses using `Salt Mine`_ by publishing the Minion host name
 via ``network.get_hostname`` function to the Salt Master (this is a default behaviour).
+In case you want to provide the list on nodes in pillar or deploy several zookeeper clusters you 
+can use ``zookeeper:nodes`` or ``zookeeper.clusters`` parameters (see below). In this case you 
+don't need to use Zookeeper roles. 
 
 This will allow you to use the ``zookeeper.settings`` state in other states to configure clients -
 the result of calling:
@@ -85,6 +88,36 @@ with the ``zookeeper`` role in the cluster, like
 And this will also work for single-node configurations. Whenever you have more than 2 hosts with
 the ``zookeeper`` role the formula will setup a Zookeeper cluster, whenever there is an even number
 it will be (number - 1).
+
+In case when more than one Zookeeper cluster are deployed clients are required to specify 
+``zookeeper:cluster_id`` parameter (via Grains or Pillar). Clients don't need to use 
+``zookeeper:cluster_id`` parameter if they are presented on the same host with one of Zookeeper 
+nodes. For example:
+
+.. code:: yaml
+
+  zookeeper:
+    clusters:
+      cluster1:
+        - 192.168.0.101
+        - 192.168.0.102
+        - 192.168.0.103
+      cluster2:
+        - 192.168.1.101
+        - 192.168.1.102
+        - 192.168.1.103
+
+If Zookeeper client is presented on the host ``192.168.1.104`` and they want to get a 
+``connection_string`` to the second cluster, they must set up ``zookeeper:cluster_id`` parameter. 
+For example, via grains:
+
+::
+
+  salt 'zk-cluster2-clients*' grains.set zookeeper:cluster_id cluster2
+
+If clients (for example, NameNodes of HDFS) are presented on the same machines (i.e. 
+``192.168.0.101``, ``192.168.0.102``, etc.) then they don't need to specify 
+``zookeeper:cluster_id`` parameter.
 
 Standalone Independent Server
 -----------------------------
@@ -202,7 +235,7 @@ Target only some of Minions with particular Grain using `Compound matcher`_:
 ~~~~~~~~~~~~~~~~~~~~
 
 If you want to provide your own list of zookeeper nodes you can use ``nodes`` parameter. In this 
-case targeting method will not be used.
+case targeting method and ``clusters`` parameter will not be used.
 
 As a node identifier you can use hostname, IP address, fqdn, minion id.
 You cannot use an IP address of the proxy server which redirects requests to the zookeeper node.
@@ -240,7 +273,67 @@ Mixed usage (IP, minion id, fqdn):
       - 192.168.0.101
       - minion2
       - zookeeper3.mysite.com
-      
+
+``clusters``
+~~~~~~~~~~~~~~~~~~~~
+
+In case you need several separate Zookeeper clusters you can use ``zookeeper:clusters`` parameter 
+where you can specify a node list for each of your cluster. 
+In this case targeting method will not be used.
+
+As a node identifier you can use hostname, IP address, fqdn, minion id.
+You cannot use an IP address of the proxy server which redirects requests to the zookeeper node.
+You can use hostname of the proxy server which redirects requests to the zookeeper node only if
+zookeeper node has the same hostname as the proxy does.
+You cannot use the same minion for two different clusters.
+
+**Examples**:
+
+IP addresses usage:
+
+.. code:: yaml
+
+  zookeeper:
+    clusters:
+      cluster1:
+        - 192.168.0.101
+        - 192.168.0.102
+        - 192.168.0.103
+      cluster2:
+        - 192.168.1.101
+        - 192.168.1.102
+        - 192.168.1.103
+        
+Fqdn usage:
+
+.. code:: yaml
+
+  zookeeper:
+    clusters:
+      cluster1:
+        - zookeeper1.cluster1.mysite.com
+        - zookeeper2.cluster1.mysite.com
+        - zookeeper3.cluster1.mysite.com
+      cluster2:
+        - zookeeper1.cluster2.mysite.com
+        - zookeeper2.cluster2.mysite.com
+        - zookeeper3.cluster2.mysite.com
+
+Mixed usage (IP, hostname, fqdn):
+
+.. code:: yaml
+
+  zookeeper:
+    clusters:
+      cluster1:
+        - 192.168.0.101
+        - minion2
+        - zookeeper3.cluster1.mysite.com
+      cluster2:
+        - 192.168.1.101
+        - minion-hostname5
+        - zookeeper3.cluster2.mysite.com
+
 ``restart_on_config``
 ~~~~~~~~~~~~~~~~~~~~~
 
