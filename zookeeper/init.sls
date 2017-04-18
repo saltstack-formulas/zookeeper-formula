@@ -36,6 +36,7 @@ zookeeper-home-link:
   alternatives.install:
     - link: {{ zk.alt_home }}
     - path: {{ zk.real_home }}
+    - onlyif: test -d {{ zk.real_home }} && test ! -L {{ zk.alt_home }}
     - priority: 30
     - require:
       - archive: install-zookeeper

@@ -27,6 +27,7 @@ zookeeper-config-link:
   alternatives.install:
     - link: {{ zk.alt_config }}
     - path: {{ zk.real_config }}
+    - onlyif: test -d {{ zk.real_config }} && test ! -L {{ zk.alt_config }}
     - priority: 30
   file.symlink:
     - name: {{ zk.alt_config }}
