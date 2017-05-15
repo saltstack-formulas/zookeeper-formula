@@ -25,16 +25,6 @@ zk-directories-removed:
 zookeeper-reload-systemctl:
   module.run:
     - name: service.systemctl_reload
-    - require:
+    - onchanges:
       - file: zk-directories-removed
 {%- endif %}
-  
-zookeeper-config-link-removed:
-  alternatives.remove:
-    - name: zookeeper-config-link
-    - path: {{ zk.real_config }}
-
-zookeeper-home-link-removed:
-  alternatives.remove:
-    - name: zookeeper-home-link
-    - path: {{ zk.real_home }}
