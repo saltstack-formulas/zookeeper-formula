@@ -25,7 +25,7 @@ zk-directories-removed:
 zookeeper-reload-systemctl:
   module.run:
     - name: service.systemctl_reload
-    - require:
+    - onchanges:
       - file: zk-directories-removed
 {%- endif %}
   
