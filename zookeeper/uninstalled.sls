@@ -26,7 +26,7 @@ zookeeper-reload-systemctl:
   module.run:
     - name: service.systemctl_reload
     - onchanges:
-      - file: zk-directories-removed
+      - file: {{ zk.systemd_unit }}
 {%- endif %}
   
 zookeeper-config-link-removed:
