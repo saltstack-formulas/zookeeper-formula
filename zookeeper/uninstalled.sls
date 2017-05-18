@@ -28,13 +28,3 @@ zookeeper-reload-systemctl:
     - onchanges:
       - file: {{ zk.systemd_unit }}
 {%- endif %}
-  
-zookeeper-config-link-removed:
-  alternatives.remove:
-    - name: zookeeper-config-link
-    - path: {{ zk.real_config }}
-
-zookeeper-home-link-removed:
-  alternatives.remove:
-    - name: zookeeper-home-link
-    - path: {{ zk.real_home }}
