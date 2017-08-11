@@ -19,3 +19,12 @@ zoo-cfg:
       purge_interval: {{ zk.purge_interval }}
       max_client_cnxns: {{ zk.max_client_cnxns }}
       zookeepers: {{ zk.zookeepers_with_ids }}
+
+id-file:
+  file.managed:
+    - name: {{ zk.myid_path }}
+    - user: zookeeper
+    - group: zookeeper
+    - contents: |
+        {{ zk.myid }}
+

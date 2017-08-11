@@ -36,14 +36,6 @@ zookeeper-config-dir:
     - require:
       - cmd: move-zookeeper-dist-conf
 
-id-file:
-  file.managed:
-    - name: {{ zk.myid_path }}
-    - user: zookeeper
-    - group: zookeeper
-    - contents: |
-        {{ zk.myid }}
-
 {%- if zk.process_control_system is defined %}
 
   {%- if zk.restart_on_change %}
