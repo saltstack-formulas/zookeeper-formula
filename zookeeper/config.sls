@@ -1,5 +1,17 @@
 {%- from 'zookeeper/settings.sls' import zk with context -%}
 
+/etc/zookeeper:
+  file.directory:
+    - user: root
+    - group: root
+
+zookeeper-data-dir:
+  file.directory:
+    - name: {{ zk.data_dir }}
+    - user: zookeeper
+    - group: zookeeper
+    - makedirs: True
+
 zoo-cfg:
   file.managed:
     - name: {{ zk.real_config }}/zoo.cfg
@@ -27,4 +39,3 @@ id-file:
     - group: zookeeper
     - contents: |
         {{ zk.myid }}
-
