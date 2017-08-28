@@ -10,7 +10,6 @@ verifier:
 
 provisioner:
   name: salt_solo
-  log_level: debug
   require_chef: false
   formula: zookeeper
 
