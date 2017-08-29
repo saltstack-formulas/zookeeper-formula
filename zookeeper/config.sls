@@ -19,6 +19,7 @@ zoo-cfg:
     - user: root
     - group: root
     - mode: 644
+    - makedirs: True
     - template: jinja
     - context:
       port: {{ zk.port }}
