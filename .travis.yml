@@ -5,8 +5,4 @@ language: ruby
 services:
   - docker
 
-before_install:
-  - bundle install
-  - mkdir vendor && cd $_ && ( for i in sun-java; do git clone http://github.com/saltstack-formulas/$i-formula.git; mv $i-formula/$i .; rm -rf $i-formula; done ); cd ..
-
-script: bundle exec kitchen verify
+script: ./test/run.sh

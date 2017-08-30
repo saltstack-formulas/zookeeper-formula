@@ -35,7 +35,7 @@ platforms:
 suites:
   - name: default
     provisioner:
-      vendor_path: vendor
+      vendor_path: vendor/sun-java-formula
       state_top:
         base:
           '*':

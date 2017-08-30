@@ -345,3 +345,14 @@ Restart the Zookeeper service on configuration change. It is recommended to set 
      restart_on_config: True
 
 .. vim: fenc=utf-8 spell spl=en cc=100 tw=99 fo=want sts=2 sw=2 et
+
+
+Testing
+=======
+
+Running the tests locally
+
+```
+bundle install
+./tests/run.sh
+```
