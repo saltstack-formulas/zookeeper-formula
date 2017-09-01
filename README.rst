@@ -26,6 +26,11 @@ Available states
 Downloads the zookeeper tarball from ``zookeeper:source_url`` (either Pillar or Grain), installs
 the package.
 
+``zookeeper.config``
+--------------------
+
+Sets up zookeeper configuration. Composable with packaging not built into this formula. 
+
 ``zookeeper.server``
 --------------------
 
