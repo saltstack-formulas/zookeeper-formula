@@ -3,8 +3,8 @@ Description=Apache Zookeeper
 After=network.target
 
 [Service]
-User=zookeeper
-Group=zookeeper
+User={{ user }}
+Group={{ user }}
 SyslogIdentifier=zookeeper
 ExecStart={{ alt_home }}/bin/zkServer.sh start-foreground
 

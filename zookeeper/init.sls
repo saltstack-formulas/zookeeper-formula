@@ -1,6 +1,6 @@
 {%- from 'zookeeper/settings.sls' import zk with context -%}
 
-zookeeper:
+{{ zk.user }}:
   group.present:
     - gid: {{ zk.uid }}
   user.present:
@@ -9,8 +9,8 @@ zookeeper:
 
 zk-directories:
   file.directory:
-    - user: zookeeper
-    - group: zookeeper
+    - user: {{ zk.user }}
+    - group: {{ zk.user }}
     - mode: 755
     - makedirs: True
     - names:
