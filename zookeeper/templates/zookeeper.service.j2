@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User={{ user }}
-Group={{ user }}
+Group={{ group }}
 SyslogIdentifier=zookeeper
 ExecStart={{ alt_home }}/bin/zkServer.sh start-foreground
 

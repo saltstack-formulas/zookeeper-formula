@@ -7,7 +7,9 @@
 
 # these are global - hence pillar-only
 {%- set uid               = p.get('uid', '6030') %}
+{%- set gid               = p.get('gid', '6030') %}
 {%- set user              = p.get('user', 'zookeeper') %}
+{%- set group             = p.get('group', 'zookeeper') %}
 {%- set userhome          = p.get('userhome', '/home/' + user ) %}
 {%- set prefix            = p.get('prefix', '/usr/lib') %}
 
@@ -128,7 +130,9 @@
 
 {%- set zk = {} %}
 {%- do zk.update( { 'uid': uid,
+                    'gid': gid,
                     'user': user,
+                    'group': group,
                     'version' : version,
                     'version_name': version_name,
                     'userhome' : userhome,

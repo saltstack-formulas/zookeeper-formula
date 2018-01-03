@@ -9,7 +9,7 @@ zookeeper-data-dir:
   file.directory:
     - name: {{ zk.data_dir }}
     - user: {{ zk.user }}
-    - group: {{ zk.user }}
+    - group: {{ zk.group }}
     - makedirs: True
 
 zoo-cfg:
@@ -37,6 +37,6 @@ id-file:
   file.managed:
     - name: {{ zk.myid_path }}
     - user: {{ zk.user }}
-    - group: {{ zk.user }}
+    - group: {{ zk.group }}
     - contents: |
         {{ zk.myid }}
