@@ -31,8 +31,6 @@ zookeeper-config-dir:
 zookeeper-in-supervisord:
   cmd.run:
     - name: "{{ zk.pcs_restart_command }}"
-    - require:
-      - pkg: {{ zk.process_control_system_pkg }}
     - onchanges:
        - file: {{ zk.real_config }}/zoo.cfg
 

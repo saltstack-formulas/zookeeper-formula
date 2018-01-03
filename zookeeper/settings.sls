@@ -30,7 +30,6 @@
 
 # This settings used if process_control_system set to true
 {%- set process_control_system = p.get('process_control_system', False) %}
-{%- set process_control_system_pkg = p.get('process_control_system_pkg', 'supervisor') %}
 {%- set pcs_restart_command = p.get('pcs_restart_command', 'supervisorctl restart zookeeper') %}
 
 # bind_address is only supported as a grain, because it has to be host-specific
@@ -167,7 +166,6 @@
                     'log_level': log_level,
                     'systemd_unit': systemd_unit,
                     'process_control_system': process_control_system,
-                    'process_control_system_pkg': process_control_system_pkg,
                     'pcs_restart_command': pcs_restart_command,
                     'restart_on_change': restart_on_change,
                   } ) %}
