@@ -24,22 +24,6 @@ zookeeper-config-dir:
     - require:
       - cmd: move-zookeeper-dist-conf
 
-{%- if zk.process_control_system is defined %}
-
-  {%- if zk.restart_on_change %}
-
-zookeeper-in-supervisord:
-  cmd.run:
-    - name: "{{ zk.pcs_restart_command }}"
-    - require:
-      - pkg: {{ zk.process_control_system }}
-    - onchanges:
-       - file: {{ zk.real_config }}/zoo.cfg
-
-  {%- endif %}
-
-{%- else %}
-
 zookeeper-env.sh:
   file.managed:
     - name: {{ zk.real_config }}/zookeeper-env.sh
@@ -56,6 +40,22 @@ zookeeper-env.sh:
       log_level: {{ zk.log_level }}
       max_heap_size: {{ zk.max_heap_size }}
       max_perm_size: {{ zk.max_perm_size }}
+
+{%- if zk.process_control_system is defined %}
+
+  {%- if zk.restart_on_change %}
+
+zookeeper-in-supervisord:
+  cmd.run:
+    - name: "{{ zk.pcs_restart_command }}"
+    - require:
+      - pkg: {{ zk.process_control_system }}
+    - onchanges:
+       - file: {{ zk.real_config }}/zoo.cfg
+
+  {%- endif %}
+
+{%- else %}
 
 zookeeper-service:
   {%- if grains.get('systemd') %}
