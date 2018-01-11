@@ -34,8 +34,8 @@ install-zookeeper:
 {%- endif %}
     - archive_format: tar
     - if_missing: {{ zk.real_home }}/lib
-    - user: root
-    - group: root
+    - user: {{ zk.user }}
+    - group: {{ zk.group }}
     
 zookeeper-home-link:
   file.symlink:
