@@ -57,7 +57,7 @@
 {%- set initial_heap_size    = gc.get('initial_heap_size', pc.get('initial_heap_size', 256)) %}
 {%- set jvm_opts             = gc.get('jvm_opts', pc.get('jvm_opts', '')) %}
 
-{%- set alt_config           = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
+{%- set alt_config           = gc.get('directory', pc.get('alt_config', '/etc/zookeeper/conf')) %}
 {%- set real_config          = alt_config + '-' + version %}
 {%- set alt_home             = prefix + '/zookeeper' %}
 {%- set real_home            = alt_home + '-' + version %}
