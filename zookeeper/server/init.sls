@@ -88,6 +88,8 @@ zookeeper-service:
     - template: jinja
     - context:
       alt_home: {{ zk.alt_home }}
+      user: {{ zk.user }}
+      group: {{ zk.group }}
     - watch_in:
       - service: zookeeper-service
   {%- endif %}
