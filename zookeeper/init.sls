@@ -19,6 +19,11 @@ zk-directories:
       - /var/log/zookeeper
 
 install-zookeeper:
+{%- if zk.distro_install %}
+  pkg.installed:
+    - name: zookeeper
+    - version: {{ zk.version }}
+{%- else %}
   archive.extracted:
     - name: {{ zk.prefix }}
     - source: {{ zk.source_url }}
@@ -38,3 +43,5 @@ zookeeper-home-link:
     - target: {{ zk.real_home }}
     - require:
       - archive: install-zookeeper
+
+{%- else %}

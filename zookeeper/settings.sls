@@ -10,6 +10,8 @@
 {%- set userhome          = p.get('userhome', '/home/zookeeper') %}
 {%- set prefix            = p.get('prefix', '/usr/lib') %}
 
+{%- set distro_install    = p.get('distro_install', False) %}
+
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
 {%- set version_name      = 'zookeeper-' + version %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}

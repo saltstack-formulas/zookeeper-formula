@@ -58,6 +58,7 @@ zookeeper-env.sh:
       max_perm_size: {{ zk.max_perm_size }}
 
 zookeeper-service:
+{%- if not zk.distro_install %}
   {%- if grains.get('systemd') %}
   # provision systemd service unit
   file.managed:
@@ -89,6 +90,7 @@ zookeeper-service:
     - watch_in:
       - service: zookeeper-service
   {%- endif %}
+{%- else %}
   service.running:
     - name: zookeeper
     - enable: True
@@ -100,4 +102,5 @@ zookeeper-service:
       - file: zoo-cfg
       - file: zookeeper-env.sh
 
+{%- endif %}
 {%- endif %}
