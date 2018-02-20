@@ -60,3 +60,30 @@ suites:
             source_md5: e4cf1b1593ca870bf1c7a75188f09678
             config:
               port: 2181
+
+  - name: package
+    provisioner:
+      vendor_path: vendor/sun-java-formula
+      state_top:
+        base:
+          '*':
+            - sun-java
+            - sun-java.env
+            - zookeeper
+            - zookeeper.server
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - zookeeper
+              - sun-java
+        sun-java.sls:
+          java:
+            version_name: jdk1.8.0_131
+            source_url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
+            source_hash: 62b215bdfb48bace523723cdbb2157c665e6a25429c73828a32f00e587301236
+        zookeeper.sls:
+          zookeeper:
+            distro_install: True
+            config:
+              port: 2181
