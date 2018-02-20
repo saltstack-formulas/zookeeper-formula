@@ -58,8 +58,8 @@ zookeeper-env.sh:
       max_perm_size: {{ zk.max_perm_size }}
 
 zookeeper-service:
-{%- if not zk.distro_install %}
-  {%- if grains.get('systemd') %}
+  {%- if not zk.distro_install %}
+    {%- if grains.get('systemd') %}
   # provision systemd service unit
   file.managed:
     - name: {{ zk.systemd_unit }}
@@ -76,7 +76,7 @@ zookeeper-service:
       - file: zookeeper-service
     - watch_in:
       - service: zookeeper-service
-  {%- elif zookeeper_map.service_script %}
+    {%- elif zookeeper_map.service_script %}
   # provision System V init script
   file.managed:
     - name: {{ zookeeper_map.service_script }}
@@ -89,18 +89,18 @@ zookeeper-service:
       alt_home: {{ zk.alt_home }}
     - watch_in:
       - service: zookeeper-service
-  {%- endif %}
-{%- else %}
+    {%- endif %}
+  {%- else %}
   service.running:
     - name: zookeeper
     - enable: True
     - require:
       - file: zookeeper-data-dir
-  {%- if zk.restart_on_change %}
+    {%- if zk.restart_on_change %}
     - watch:
-  {%- endif %}
+    {%- endif %}
       - file: zoo-cfg
       - file: zookeeper-env.sh
 
-{%- endif %}
+  {%- endif %}
 {%- endif %}

@@ -13,7 +13,7 @@
 {%- set distro_install    = p.get('distro_install', False) %}
 
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
-{%- set version_name      = 'zookeeper-' + version %}
+{%- set version_name      = 'zookeeper-' + (version if version is defined else '' ) %}
 {%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
 {%- set default_md5s = {
@@ -131,6 +131,7 @@
 {%- do zk.update( { 'uid': uid,
                     'version' : version,
                     'version_name': version_name,
+                    'distro_install': distro_install,
                     'userhome' : userhome,
                     'source_url': source_url,
                     'source_md5': source_md5,
