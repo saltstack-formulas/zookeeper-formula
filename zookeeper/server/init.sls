@@ -12,6 +12,7 @@ move-zookeeper-dist-conf:
     - require:
       - file: /etc/zookeeper
 
+{%- if not zk.distro_install %}
 zookeeper-config-link:
   file.symlink:
     - name: {{ zk.alt_config }}
@@ -23,6 +24,7 @@ zookeeper-config-dir:
     - target: {{ zk.real_config }}
     - require:
       - cmd: move-zookeeper-dist-conf
+{%- endif %}
 
 {%- if zk.process_control_system is defined %}
 
