@@ -24,15 +24,13 @@ zookeeper-config-dir:
     - require:
       - cmd: move-zookeeper-dist-conf
 
-{%- if zk.process_control_system is defined %}
+{%- if zk.process_control_system %}
 
   {%- if zk.restart_on_change %}
 
 zookeeper-in-supervisord:
   cmd.run:
     - name: "{{ zk.pcs_restart_command }}"
-    - require:
-      - pkg: {{ zk.process_control_system }}
     - onchanges:
        - file: {{ zk.real_config }}/zoo.cfg
 
