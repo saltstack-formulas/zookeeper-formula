@@ -15,7 +15,8 @@ GEM
     excon (0.56.0)
     faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.18)
+    ffi (1.10.0)
+    ffi (1.10.0-java)
     gssapi (1.2.0)
       ffi (>= 1.0.1)
     gyoku (1.3.1)
@@ -42,6 +43,7 @@ GEM
       toml (~> 0.1)
       train (>= 0.24.0, < 1.0)
     json (2.1.0)
+    json (2.1.0-java)
     kitchen-docker (2.6.0)
       test-kitchen (>= 1.0.0)
     kitchen-inspec (0.19.0)
@@ -78,6 +80,11 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry (0.10.4-java)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+      spoon (~> 0.0)
     public_suffix (2.0.5)
     rainbow (2.2.2)
       rake
@@ -99,10 +106,12 @@ GEM
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
     rubyntlm (0.6.2)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     semverse (2.0.0)
     slop (3.6.0)
+    spoon (0.0.6)
+      ffi
     sslshake (1.2.0)
     test-kitchen (1.16.0)
       mixlib-install (>= 1.2, < 3.0)
@@ -139,6 +148,7 @@ GEM
       winrm (~> 2.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
@@ -148,4 +158,4 @@ DEPENDENCIES
   test-kitchen
 
 BUNDLED WITH
-   1.15.1
+   1.17.3
