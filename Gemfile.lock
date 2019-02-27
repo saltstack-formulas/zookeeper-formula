@@ -148,7 +148,6 @@ GEM
       winrm (~> 2.0)
 
 PLATFORMS
-  java
   ruby
 
 DEPENDENCIES
