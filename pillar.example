@@ -15,6 +15,7 @@ zookeeper:
   hosts_target: 'roles:zookeeper'
   targeting_method: grain # [compound, glob] also supported
   config:
+    alt_config: /etc/zookeeper/conf
     data_dir: /var/lib/zookeeper/data
     port: 2181
     jmx_port: 2183
