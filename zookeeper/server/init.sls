@@ -67,6 +67,8 @@ zookeeper-service:
     - template: jinja
     - context:
       alt_home: {{ zk.alt_home }}
+      user: {{ zk.user }}
+      group: {{ zk.group }}
   module.wait:
     - name: service.systemctl_reload
     - watch:
@@ -84,6 +86,8 @@ zookeeper-service:
     - template: jinja
     - context:
       alt_home: {{ zk.alt_home }}
+      user: {{ zk.user }}
+      group: {{ zk.group }}
     - watch_in:
       - service: zookeeper-service
   {%- endif %}
