@@ -41,7 +41,7 @@ zookeeper-env.sh:
       max_heap_size: {{ zk.max_heap_size }}
       max_perm_size: {{ zk.max_perm_size }}
 
-{%- if zk.process_control_system is defined %}
+{%- if zk.process_control_system %}
 
   {%- if zk.restart_on_change %}
 
