@@ -1,16 +1,21 @@
 {%- from 'zookeeper/settings.sls' import zk with context -%}
 
-zookeeper:
+zk-user-group:
   group.present:
-    - gid: {{ zk.uid }}
+    - name: {{ zk.group }}
+    - gid: {{ zk.gid }}
   user.present:
+    - name: {{ zk.user }}
+    - home: {{ zk.userhome }}
     - uid: {{ zk.uid }}
-    - gid: {{ zk.uid }}
+    - gid: {{ zk.gid }}
+    - require:
+      - group: {{ zk.group }}
 
 zk-directories:
   file.directory:
-    - user: zookeeper
-    - group: zookeeper
+    - user: {{ zk.user }}
+    - group: {{ zk.group }}
     - mode: 755
     - makedirs: True
     - names:
@@ -29,8 +34,8 @@ install-zookeeper:
 {%- endif %}
     - archive_format: tar
     - if_missing: {{ zk.real_home }}/lib
-    - user: root
-    - group: root
+    - user: {{ zk.user }}
+    - group: {{ zk.group }}
     
 zookeeper-home-link:
   file.symlink:

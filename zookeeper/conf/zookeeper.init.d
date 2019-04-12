@@ -31,7 +31,7 @@ desc="ZooKeeper daemon"
 
 start() {
   echo -n $"Starting $desc (zookeeper): "
-  daemon --user zookeeper ${SERVER_SCRIPT} start
+  daemon --user {{ user }} ${SERVER_SCRIPT} start
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && touch /var/lock/subsys/zookeeper
@@ -40,7 +40,7 @@ start() {
 
 stop() {
   echo -n $"Stopping $desc (zookeeper): "
-  daemon --user zookeeper ${SERVER_SCRIPT} stop
+  daemon --user {{ user }} ${SERVER_SCRIPT} stop
   RETVAL=$?
   sleep 5
   echo

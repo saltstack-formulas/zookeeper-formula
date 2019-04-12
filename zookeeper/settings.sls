@@ -7,7 +7,10 @@
 
 # these are global - hence pillar-only
 {%- set uid               = p.get('uid', '6030') %}
-{%- set userhome          = p.get('userhome', '/home/zookeeper') %}
+{%- set gid               = p.get('gid', '6030') %}
+{%- set user              = p.get('user', 'zookeeper') %}
+{%- set group             = p.get('group', 'zookeeper') %}
+{%- set userhome          = p.get('userhome', '/home/' + user ) %}
 {%- set prefix            = p.get('prefix', '/usr/lib') %}
 
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
@@ -27,6 +30,10 @@
 
 # This tells the state whether or not to restart the service on configuration change
 {%- set restart_on_change = p.get('restart_on_config', 'True') %}
+
+# This settings used if process_control_system set to true
+{%- set process_control_system = p.get('process_control_system', False) %}
+{%- set pcs_restart_command = p.get('pcs_restart_command', 'supervisorctl restart zookeeper') %}
 
 # bind_address is only supported as a grain, because it has to be host-specific
 {%- set bind_address      = gc.get('bind_address', '') %}
@@ -57,7 +64,7 @@
 {%- set initial_heap_size    = gc.get('initial_heap_size', pc.get('initial_heap_size', 256)) %}
 {%- set jvm_opts             = gc.get('jvm_opts', pc.get('jvm_opts', '')) %}
 
-{%- set alt_config           = salt['grains.get']('zookeeper:config:directory', '/etc/zookeeper/conf') %}
+{%- set alt_config           = gc.get('directory', pc.get('alt_config', '/etc/zookeeper/conf')) %}
 {%- set real_config          = alt_config + '-' + version %}
 {%- set alt_home             = prefix + '/zookeeper' %}
 {%- set real_home            = alt_home + '-' + version %}
@@ -127,6 +134,9 @@
 
 {%- set zk = {} %}
 {%- do zk.update( { 'uid': uid,
+                    'gid': gid,
+                    'user': user,
+                    'group': group,
                     'version' : version,
                     'version_name': version_name,
                     'userhome' : userhome,
@@ -161,5 +171,7 @@
                     'jvm_opts': jvm_opts,
                     'log_level': log_level,
                     'systemd_unit': systemd_unit,
+                    'process_control_system': process_control_system,
+                    'pcs_restart_command': pcs_restart_command,
                     'restart_on_change': restart_on_change,
                   } ) %}

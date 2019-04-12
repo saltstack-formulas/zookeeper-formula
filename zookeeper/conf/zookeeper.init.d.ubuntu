@@ -51,7 +51,7 @@ EXEC_PATH="{{ alt_home }}/bin/zkServer.sh"
 
 DAEMON="zookeeper"
 DESC="Zookeeper Server"
-SVC_USER="zookeeper"
+SVC_USER="{{ user }}"
 LOCKDIR="/var/lock/subsys"
 LOCKFILE="$LOCKDIR/$DAEMON"
 

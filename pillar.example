@@ -11,10 +11,15 @@ zookeeper:
   source_md5: 3e8506075212c2d41030d874fcc9dcd2
   prefix: /usr/lib
   uid: 6030
+  gid: 6030
+  user: zookeeper
+  group: zookeeper
+  userhome: /home/zookeeper
   hosts_function: network.get_hostname
   hosts_target: 'roles:zookeeper'
   targeting_method: grain # [compound, glob] also supported
   config:
+    alt_config: /etc/zookeeper/conf
     data_dir: /var/lib/zookeeper/data
     port: 2181
     jmx_port: 2183
@@ -30,10 +35,12 @@ zookeeper:
     quorum_port: 2888
     election_port: 3888
   restart_on_config: True
-
-# Use external service management instead init or systemd.
-# process_control_system: supervisor # You can use whatever you want not just Supervisord.
+# Use external service management instead init or systemd. default=False
+# process_control_system: True
+# You can use whatever you want not just Supervisord. default='supervisorctl restart zookeeper'
 # pcs_restart_command: 'supervisorctl restart zookeeper'
+# define service management package installed as dependency. default=supervisor
+# process_control_system: supervisor
 
 # Configure Salt Mine function with parameters used in zookeeper:hosts_function
 #
