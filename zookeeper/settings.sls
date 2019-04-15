@@ -15,7 +15,7 @@
 
 {%- set version           = g.get('version', p.get('version', '3.4.6')) %}
 {%- set version_name      = 'zookeeper-' + version %}
-{%- set default_url       = 'http://apache.osuosl.org/zookeeper/' + version_name + '/' + version_name + '.tar.gz' %}
+{%- set default_url       = 'https://archive.apache.org/dist/zookeeper/{0}/{0}.tar.gz'.format(version_name) %}
 {%- set source_url        = g.get('source_url', p.get('source_url', default_url)) %}
 {%- set default_md5s = {
   "3.4.6": "971c379ba65714fd25dc5fe8f14e9ad1",
