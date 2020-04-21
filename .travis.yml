@@ -1,8 +1,19 @@
-sudo: required
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+## Machine config
+os: 'linux'
+arch: 'amd64'
+dist: 'bionic'
+version: '~> 1.0'
 
-language: ruby
+## Language and cache config
+language: 'ruby'
+cache: 'bundler'
 
+## Services config
 services:
   - docker
 
+## Script to run for the test stage
 script: ./test/run.sh
