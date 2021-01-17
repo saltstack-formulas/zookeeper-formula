@@ -1,0 +1,47 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables using grains['os_family'] based logic.
+# You just need to add the key:values for an `os_family` that differ
+# from `defaults.yaml` + `osarch.yaml`.
+# Only add an `os_family` which is/will be supported by the formula.
+#
+# If you do not need to provide defaults via the `os_family` grain,
+# you will need to provide at least an empty dict in this file, e.g.
+# osfamilymap: {}
+---
+Debian:
+  pkg:
+    javajdk: 'openjdk-11-jdk'
+
+RedHat:
+  pkg:
+    javajdk: 'java-11-openjdk'
+
+Suse:
+  pkg:
+    name: zookeeper-suse
+
+Gentoo:
+  pkg:
+    name: zookeeper-gentoo
+
+Arch:
+  pkg:
+    name: zookeeper-arch
+  service:
+    name: service-arch
+
+Alpine: {}
+
+FreeBSD:
+  rootgroup: wheel
+
+OpenBSD:
+  rootgroup: wheel
+
+Solaris: {}
+
+Windows: {}
+
+MacOS: {}
