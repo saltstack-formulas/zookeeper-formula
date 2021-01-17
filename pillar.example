@@ -31,20 +31,4 @@ zookeeper:
     initLimit: 5
     syncLimit: 2
 
-    customservers:
-      Node1:
-        hostname: nifi-01.localdomain
-        zookeeper_myid: 1
-        zookeeper_clientPort: 2181
-        zookeeper_peerPorts: '2888:3888'
-      Node2:
-        hostname: nifi-02.localdomain
-        zookeeper_myid: 2
-        zookeeper_clientPort: 2181
-        zookeeper_peerPorts: '2888:3888'
-      Node3:
-        hostname: nifi-03.localdomain
-        zookeeper_myid: 3
-        zookeeper_clientPort: 2181
-        zookeeper_peerPorts: '2888:3888'
-
+    customservers: ''
