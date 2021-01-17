@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+# Prepare platform "finger"
+platform_finger = system.platform[:finger].split('.').first.to_s
+
+control 'zookeeper package' do
+  title 'should be installed'
+
+  # Overide by `platform_finger`
+  package_name =
+    case platform_finger
+    when 'centos-6', 'amazonlinux-1'
+      'cronie'
+    else
+      'bash'
+    end
+
+  describe package(package_name) do
+    it { should be_installed }
+  end
+end

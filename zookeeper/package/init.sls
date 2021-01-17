@@ -2,6 +2,5 @@
 # vim: ft=sls
 
 include:
-  - .package
-  - .config
-  - .service
+  - .javajdk
+  - .install
