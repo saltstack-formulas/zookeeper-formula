@@ -9,7 +9,7 @@ zookeeper-dependency-install-pkg-installed:
   pkg.installed:
     - name: tar
 
-zookeeper-package-install-pkg-installed:
+zookeeper-archive-install-pkg-installed:
   archive.extracted:
     - name: {{ zookeeper.pkg.installdir }}/zookeeper-{{ zookeeper.pkg.version }}
     - source: {{ zookeeper.pkg.downloadurl }}

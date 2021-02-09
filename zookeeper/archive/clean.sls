@@ -9,7 +9,7 @@
 include:
   - {{ sls_config_clean }}
 
-zookeeper-package-clean-pkg-removed:
+zookeeper-archive-clean-pkg-removed:
   pkg.removed:
     - name: {{ zookeeper.pkg.name }}
     - require:

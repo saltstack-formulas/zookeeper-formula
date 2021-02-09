@@ -5,7 +5,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import zookeeper with context %}
 {%- if zookeeper.pkg.javajdk %}
-zookeeper-package-install-dependency-javajdk:
+zookeeper-archive-install-dependency-javajdk:
   pkg.installed:
     - name: {{ zookeeper.pkg.javajdk }}
 {%- endif %}

@@ -13,16 +13,13 @@
 # os_family: Debian
 Ubuntu:
   pkg:
-    name: zookeeper-ubuntu
-  config: /etc/zookeeper.d/custom-ubuntu.conf
+    name: zookeeper
 Raspbian: {}
 
 # os_family: RedHat
 Fedora:
   pkg:
-    name: zookeeper-fedora
-  service:
-    name: service-fedora
+    name: zookeeper
 CentOS: {}
 Amazon: {}
 
