@@ -16,8 +16,6 @@ pkg:
 rootgroup: root
 service:
   name: systemd-journald
-subcomponent:
-  config: /etc/zookeeper-subcomponent-formula.conf
 tofs:
   files_switch:
   - any/path/can/be/used/here
@@ -29,6 +27,4 @@ tofs:
   source_files:
     zookeeper-config-file-file-managed:
     - example.tmpl.jinja
-    zookeeper-subcomponent-config-file-file-managed:
-    - subcomponent-example.tmpl.jinja
 winner: pillar

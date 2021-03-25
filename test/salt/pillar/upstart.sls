@@ -47,8 +47,6 @@ zookeeper:
     source_files:
       zookeeper-config-file-file-managed:
         - 'example.tmpl.jinja'
-      zookeeper-subcomponent-config-file-file-managed:
-        - 'subcomponent-example.tmpl.jinja'
 
   # Just for testing purposes
   winner: pillar
