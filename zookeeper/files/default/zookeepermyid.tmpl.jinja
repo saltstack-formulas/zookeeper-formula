@@ -1,0 +1,6 @@
+{% set hostname = grains['fqdn'] %}
+{%- for nodes, args in zookeeper.zookeeperproperties['customservers'].items() %}
+  {%- if hostname == args.hostname -%}
+    {{ args.zookeeper_myid }}
+  {%- endif -%}
+{%- endfor %}
