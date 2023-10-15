@@ -17,7 +17,9 @@ platforms:
   - name: ubuntu-16.04
     driver_config:
       provision_command:
+        # yamllint disable rule:line-length
         - apt-get update && apt-get install -y netcat-openbsd locales && locale-gen en_US.UTF-8
+        # yamllint enable
       run_command: /sbin/init
       privileged: true
       pid_one_command: /usr/lib/systemd/systemd
@@ -51,8 +53,10 @@ suites:
         sun-java.sls:
           java:
             version_name: jdk1.8.0_131
+            # yamllint disable rule:line-length
             source_url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
             source_hash: 62b215bdfb48bace523723cdbb2157c665e6a25429c73828a32f00e587301236
+            # yamllint enable
         zookeeper.sls:
           zookeeper:
             version: 3.4.10
