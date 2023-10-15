@@ -1,7 +1,7 @@
 .. _readme:
 
 zookeeper-formula
-================
+=================
 
 Installs and Configures Apache Zookeeper from from a tar file.
 
@@ -75,7 +75,7 @@ Available states
    :local:
 
 ``zookeeper``
-^^^^^^^^^^^^
+^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -84,24 +84,24 @@ manages the zookeeper configuration file and then
 starts the associated zookeeper service.
 
 ``zookeeper.package``
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 This state will install the zookeeper package only.
 
 ``zookeeper.config``
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 This state will configure the zookeeper service and has a dependency on ``zookeeper.install``
 via include list.
 
 ``zookeeper.service``
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 This state will start the zookeeper service and has a dependency on ``zookeeper.config``
 via include list.
 
 ``zookeeper.clean``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -111,18 +111,18 @@ removes the configuration file and
 then uninstalls the package.
 
 ``zookeeper.service.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will stop the zookeeper service and disable it at boot time.
 
 ``zookeeper.config.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove the configuration of the zookeeper service and has a
 dependency on ``zookeeper.service.clean`` via include list.
 
 ``zookeeper.package.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove the zookeeper package and has a depency on
 ``zookeeper.config.clean`` via include list.
